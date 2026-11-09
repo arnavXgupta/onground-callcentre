@@ -1,0 +1,65 @@
+/* Source of truth: brand.md. Change there first, then here. */
+:root {
+  /* surfaces */
+  --canvas: #f4f5f7;
+  --surface: #ffffff;
+  --surface-muted: #f8f9fa;
+  --border: #e6e8eb;
+  --border-strong: #d5d9de;
+
+  /* shell */
+  --shell: #0b1f17;
+  --shell-raised: #132e23;
+  --shell-text: #c9d6cf;
+  --shell-text-strong: #ffffff;
+
+  /* text */
+  --text: #16181b;
+  --text-muted: #5f6670;
+  --text-subtle: #8b929b;
+
+  /* brand / semantic */
+  --brand: #1d9e75;
+  --brand-strong: #0f6e56;
+  --brand-tint: #e6f6ef;
+  --ai: #7c3aed;
+  --ai-tint: #f2edff;
+  --warn: #b7791f;
+  --warn-tint: #fdf4e3;
+  --danger: #d64545;
+  --danger-tint: #fdeeee;
+  --info: #2563eb;
+  --info-tint: #eaf1fe;
+
+  /* the only two gradients */
+  --hero-gradient: linear-gradient(135deg, #14213d, #1e3a8a);
+  --call-gradient: linear-gradient(135deg, var(--shell), var(--brand-strong));
+
+  /* type: size / line-height */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --fs-xs: 12px;  --lh-xs: 16px;
+  --fs-sm: 13px;  --lh-sm: 18px;
+  --fs-md: 14px;  --lh-md: 20px;
+  --fs-lg: 16px;  --lh-lg: 22px;
+  --fs-xl: 20px;  --lh-xl: 26px;
+  --fs-2xl: 28px; --lh-2xl: 32px;
+
+  /* space (4px grid) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
+
+  /* radius */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-full: 999px;
+
+  /* elevation */
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-pop: 0 12px 32px rgb(16 24 40 / 0.18);
+  --scrim: rgb(10 15 13 / 0.45);
+
+  /* shell geometry */
+  --sidebar-w: 232px;
+  --topbar-h: 56px;
+}
