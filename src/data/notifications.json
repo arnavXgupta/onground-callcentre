@@ -1,0 +1,8 @@
+[
+  { "id": "n1", "kind": "team", "time": "2:05pm", "title": "Sunita Rao is reviewing greeting QA scores on Friday. Reply in #callcentre-team.", "cta": { "label": "Open #callcentre-team", "to": "/pulse/callcentre-team" } },
+  { "id": "n2", "kind": "callback", "time": "11:40am", "title": "1 callback is still open from this morning's queue.", "cta": { "label": "Open incoming", "to": "/plan/incoming" } },
+  { "id": "n3", "kind": "practise", "time": "Today", "title": "Your coach suggests practising the warranty pitch before your next call.", "cta": { "label": "Practise a call", "to": "/plan/practise" } },
+  { "id": "n4", "kind": "win", "time": "1:05pm", "title": "Your EMI-pitch rate hit 55% this shift. Target met." },
+  { "id": "n5", "kind": "streak", "time": "Yesterday", "title": "7-day SOP streak. Kudos sent to the team automatically." },
+  { "id": "n6", "kind": "report", "time": "Mon 8:00am", "title": "Your weekly call-quality summary was sent to your registered number." }
+]

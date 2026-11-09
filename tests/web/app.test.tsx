@@ -1,15 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
+import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import App from '../../src/App'
-
-function renderAt(path: string) {
-  return render(
-    <MemoryRouter initialEntries={[path]}>
-      <App />
-    </MemoryRouter>,
-  )
-}
+import { renderAt } from './render'
 
 describe('routing', () => {
   it.each([

@@ -32,6 +32,8 @@ radii and gradients in exactly two places.
 --shell-raised:  #132e23;   /* active nav item */
 --shell-text:    #c9d6cf;
 --shell-text-strong: #ffffff;
+--shell-accent:  #6fdcb4;   /* active sub-item / phone tab on the dark shell */
+--gold:          #f5c451;   /* rank star only */
 
 /* text */
 --text:          #16181b;
@@ -91,7 +93,8 @@ on numbers.
 ## Shell
 
 - Sidebar 232px, `--shell`. Nav item 36px, 18px icon, active = `--shell-raised`
-  bg + white text. Plan's sub-items indent 28px and show only while Plan is active.
+  bg + white text. Plan's sub-items indent 28px and are always visible (as in the mock), so
+  every plan tab is one click away.
 - Top bar 56px, `--shell`, brand mark left; notifications, OG score + rank pill,
   avatar right.
 - Phone (< 768px): sidebar becomes a bottom tab bar (Dashboard, Plan, Calendar,

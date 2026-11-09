@@ -6,7 +6,7 @@ the shell, before the screens that hang off it.
 | # | Feature | Brief | Plan | Status |
 |---|---------|-------|------|--------|
 | 01 | Foundation: scaffold, tokens, routing skeleton, test harness | – | [01](01-foundation.md) | done |
-| 02 | App shell: sidebar, top bar, phone tab bar | must | 02 | – |
+| 02 | App shell: sidebar, top bar, phone tab bar | must | [02](02-app-shell.md) | done |
 | 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | 03 | – |
 | 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | 04 | – |
 | 05 | Plan · Incoming: missed calls, value at stake, Call back | must | 05 | – |

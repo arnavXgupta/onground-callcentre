@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useParams } from 'react-router'
+import Shell from './components/shell/Shell'
 
 export const PLAN_TABS = ['outgoing', 'incoming', 'recent', 'practise'] as const
 export type PlanTab = (typeof PLAN_TABS)[number]
@@ -22,12 +23,14 @@ function ChannelRoute() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/dashboard" element={<Screen title="Dashboard" />} />
-      <Route path="/plan" element={<Navigate to="/plan/outgoing" replace />} />
-      <Route path="/plan/:tab" element={<PlanRoute />} />
-      <Route path="/calendar" element={<Screen title="Calendar" />} />
-      <Route path="/pulse" element={<Screen title="Pulse" />} />
-      <Route path="/pulse/:channel" element={<ChannelRoute />} />
+      <Route element={<Shell />}>
+        <Route path="/dashboard" element={<Screen title="Dashboard" />} />
+        <Route path="/plan" element={<Navigate to="/plan/outgoing" replace />} />
+        <Route path="/plan/:tab" element={<PlanRoute />} />
+        <Route path="/calendar" element={<Screen title="Calendar" />} />
+        <Route path="/pulse" element={<Screen title="Pulse" />} />
+        <Route path="/pulse/:channel" element={<ChannelRoute />} />
+      </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   )

@@ -12,6 +12,8 @@
   --shell-raised: #132e23;
   --shell-text: #c9d6cf;
   --shell-text-strong: #ffffff;
+  --shell-accent: #6fdcb4;   /* active sub-item / tab on the dark shell */
+  --gold: #f5c451;           /* rank star only */
 
   /* text */
   --text: #16181b;
@@ -62,4 +64,5 @@
   /* shell geometry */
   --sidebar-w: 232px;
   --topbar-h: 56px;
+  --tabbar-h: 60px;
 }
