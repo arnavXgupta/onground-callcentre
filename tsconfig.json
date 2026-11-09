@@ -29,6 +29,7 @@
     "api",
     "server",
     "dev",
-    "vite.config.ts"
+    "vite.config.ts",
+    "scripts"
   ]
 }

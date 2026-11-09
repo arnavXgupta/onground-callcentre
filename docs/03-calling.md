@@ -143,14 +143,18 @@ and ring.
 | manual (in Verification) | real call each way on a real phone |
 
 ## Needs from the user
-1. Twilio account **upgraded** (add balance; trial blocks the verbs we need)
-2. A **US phone number** with Voice
-3. API Key (SID + Secret); Account SID + Auth Token
-4. TwiML App, Voice URL `https://<prod-or-ngrok-host>/api/voice` (POST); number's
-   "A call comes in" → same URL
-5. Voice Geo Permissions: India on
-6. A usage trigger (e.g. $10/day) as a safety net
-7. Phones for the demo: their E.164 numbers → `DIAL_ALLOWLIST`, one → `LEAD_CALL_NUMBER`; ISD enabled on the inbound demo phone
+`npm run twilio:check` reports what's missing, read-only, with the fix for each item.
+`npm run twilio:setup` does the rest: creates/updates the TwiML App, points the number at it,
+turns on India geo permission, and writes the SIDs into `.env`. Re-run it whenever
+`PUBLIC_BASE_URL` changes.
+
+Only these need a human in the Twilio Console (money or credentials):
+1. **Upgrade** the account (Trial banner → Upgrade, or search "Upgrade"; add the starting balance)
+2. **Buy a US number** with Voice (search "Buy a number" → United States, Voice ✓)
+3. **Standard API key** (Settings → Account settings → API keys & auth tokens → Create API key →
+   type **Standard**). A Restricted key authenticates, but Twilio can't sign client-SDK Access
+   Tokens with it (found by `twilio:check` on 2026-11-09; Twilio's Restricted-keys docs confirm).
+4. Your phone(s) in `.env`: `LEAD_CALL_NUMBER`, `DIAL_ALLOWLIST` (E.164)
 
 ## Review
 **2026-11-09 · rev 1 → independent reviewer subagent** (checked against Twilio
