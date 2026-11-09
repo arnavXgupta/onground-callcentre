@@ -17,7 +17,7 @@ the shell, before the screens that hang off it.
 | 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | [10](10-pulse-home.md) | done |
 | 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | [11](11-pulse-channel.md) | done |
 | 12 | Calendar: month grid, event dots, Today, month switcher | must | [12](12-calendar.md) | done |
-| 13 | Practise a call | bonus | 13 | – |
+| 13 | Practise a call | bonus | [13](13-practise.md) | done |
 | 14 | Deploy, README, demo recording | **required** | 14 | – |
 
 Phone width (bonus) is part of every feature's acceptance criteria rather than

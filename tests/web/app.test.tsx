@@ -8,7 +8,7 @@ describe('routing', () => {
     ['/plan/outgoing', 'Planned outgoing calls'],
     ['/plan/incoming', 'Missed calls'],
     ['/plan/recent', 'Recent calls'],
-    ['/plan/practise', 'Practise'],
+    ['/plan/practise', 'Practise a call'],
     ['/calendar', 'Calendar'],
     ['/pulse', 'Pulse'],
     ['/pulse/callcentre-team', '#callcentre-team'],

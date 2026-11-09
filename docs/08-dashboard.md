@@ -93,6 +93,6 @@ no emoji in chrome, real charts with value labels and accessible data tables.
   labels and today highlighted. 390px: KPIs 2×2, columns stacked.
 - Fixed in the shell at 390px: the top bar was so crowded that "Go online" wrapped onto two
   lines. The section title is hidden on phones (the tab bar names it) and the pill doesn't wrap.
-- Test-suite health: the default route now lazy-loads Recharts, and parallel workers slowed past
-  the 5s timeout. userEvent now runs with `delay: null`, tests that aren't about the dashboard
-  start on lighter routes, and `testTimeout` is 15s as headroom. Each file alone runs in < 1s.
+- Test-suite health: tests started timing out once the dashboard lazy-loaded Recharts. userEvent
+  now runs with `delay: null` and tests that aren't about the dashboard start on lighter routes.
+  The real cause turned up in 13: worker oversubscription (see 13's verification).

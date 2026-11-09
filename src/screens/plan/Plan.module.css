@@ -361,6 +361,163 @@ button.rowHead:hover {
   line-height: var(--lh-sm);
 }
 
+/* ── practise a call ──────────────────────────────────── */
+.scenarios {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scenario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.scenario p {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+}
+
+.scenarioHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.scenarioHead div {
+  display: flex;
+  flex-direction: column;
+}
+
+.scenarioHead span {
+  color: var(--ai);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.practice {
+  display: grid;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+.practiceHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.practiceHead > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.practiceTimer {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+.practiceBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--sp-4);
+}
+
+.practiceBody > div {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: var(--sp-3);
+}
+
+.customer {
+  display: flex;
+  gap: var(--sp-3);
+  width: 100%;
+}
+
+.customerLine {
+  margin-top: var(--sp-1);
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: 4px var(--r-lg) var(--r-lg) var(--r-lg);
+  background: var(--surface-muted);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-lg);
+}
+
+.hint {
+  display: flex;
+  gap: var(--sp-2);
+  width: 100%;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--ai-tint);
+  color: #4c1d95;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+}
+
+.hint svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.checklist {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.checklist label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.checklist input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand);
+}
+
+.feedbackMeta {
+  margin-top: var(--sp-1);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.practiceActions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.sopList li[data-pass='false'] > svg {
+  color: var(--warn);
+}
+
 @media (max-width: 767px) {
   .rowSide {
     gap: 2px;
@@ -410,5 +567,14 @@ button.rowHead:hover {
 
   .rowMeta {
     white-space: normal; /* phone: wrap the meta line instead of cutting it */
+  }
+
+  .scenarios,
+  .practiceBody {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .practiceHead {
+    flex-wrap: wrap;
   }
 }

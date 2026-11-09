@@ -1,0 +1,78 @@
+{
+  "steps": [
+    {
+      "step": "Opening & intent confirm",
+      "hint": "“Hi {name}, this is Arvind from The Sleep Company. Is now a good time?”",
+      "tip": "Open with your name, the brand and permission to talk, all in the first 10 seconds."
+    },
+    {
+      "step": "Needs discovery",
+      "hint": "“What matters most to you: firmness, cooling or price?”",
+      "tip": "Ask one open question before you pitch anything."
+    },
+    {
+      "step": "Product pitch",
+      "hint": "“Given that, the {product} is the right fit because…”",
+      "tip": "Tie the product to what they told you, not to its spec sheet."
+    },
+    {
+      "step": "EMI / financing mention",
+      "hint": "“There's a no-cost EMI plan, so it's a small amount each month.”",
+      "tip": "Bring up EMI before price turns into the objection."
+    },
+    {
+      "step": "Warranty mention",
+      "hint": "“You also get the 100-night trial and the warranty, so there's no risk.”",
+      "tip": "Mention the trial and warranty before they decide. It takes the risk away."
+    },
+    {
+      "step": "Closing / callback booking",
+      "hint": "“Shall I send the quote now and call you Thursday at 6?”",
+      "tip": "Always end with a dated next step."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "ritu",
+      "leadId": "ritu-s",
+      "title": "Hot lead · delivery question",
+      "brief": "Visited the RT Nagar store and tried the Smart Luxe. Wants to know about delivery.",
+      "lines": [
+        "Hi, yes. I visited your RT Nagar store last week.",
+        "I liked the Smart Luxe. How soon can you deliver it?",
+        "Okay. What does it come to with the protector?",
+        "That's a bit more than I planned for.",
+        "And if I don't like it after a few weeks?",
+        "Alright, send me the details."
+      ]
+    },
+    {
+      "id": "kavitha",
+      "leadId": "kavitha-r",
+      "title": "Price objection · SLA missed",
+      "brief": "Asked to hold the price two days ago and went quiet. The SLA is already missed.",
+      "lines": [
+        "Oh. I was expecting a call two days ago.",
+        "Honestly, I found a cheaper cooling mattress online.",
+        "Is the hybrid really better for me? I sleep hot.",
+        "Can you still hold the old price?",
+        "Maybe I should come and try it first.",
+        "Okay, when could I come in?"
+      ]
+    },
+    {
+      "id": "faizan",
+      "leadId": "faizan-a",
+      "title": "EMI close · decision day",
+      "brief": "Tried the Tranquo chair in-store. Wants the 6-month no-cost EMI and said he'd decide today.",
+      "lines": [
+        "Hi. I said I'd decide today, right?",
+        "I want the 6-month no-cost EMI. Is that still on?",
+        "What paperwork do you need from me?",
+        "And the warranty, how long is it?",
+        "Does the seat cushion come with it?",
+        "Great, let's do it."
+      ]
+    }
+  ]
+}
