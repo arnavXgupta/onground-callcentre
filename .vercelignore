@@ -1,0 +1,8 @@
+.env
+.env.*
+!.env.example
+*.pdf
+OnGround_CallCentre_App_Mock.html
+dist
+bot
+tests

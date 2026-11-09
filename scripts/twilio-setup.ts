@@ -10,7 +10,10 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import twilio from 'twilio'
 
-const ENV_FILE = existsSync('.env.local') ? '.env.local' : '.env'
+// Same precedence as the dev server: shell env > .env.local > .env (loadEnvFile never overrides).
+// .env.local may hold only Vercel's VERCEL_OIDC_TOKEN, so .env is where the SIDs get written.
+const ENV_FILE = '.env'
+if (existsSync('.env.local')) process.loadEnvFile('.env.local')
 process.loadEnvFile(ENV_FILE)
 const env = process.env
 const APPLY = process.argv.includes('--apply')

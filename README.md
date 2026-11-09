@@ -4,7 +4,10 @@ A rebuild of On-Ground.ai's call-centre agent app, with real telephone calling.
 An agent can call a real phone from the browser, and take calls from real
 phones, through Twilio.
 
-**Live:** _added after deploy_ · **Demo video:** _added after recording_
+**Live:** https://onground-callcentre-mu.vercel.app · **Demo video:** _added after recording_
+
+On the live link, Place call rings the demo phone, not a phone of your choice:
+the Twilio trial can only call verified numbers.
 
 ## Run it
 
