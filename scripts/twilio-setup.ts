@@ -50,12 +50,9 @@ async function main() {
   const client = twilio(sid, token)
   const account = await client.api.v2010.accounts(sid).fetch()
   ok(`signed in as "${account.friendlyName}" (${account.status})`)
-  if (account.type === 'Trial') {
-    todo(
-      'account is on Trial: trial blocks browser↔phone calls and AI media streams',
-      'Console → Admin (top right) → Account billing → Upgrade account, add balance (≈ $20)',
-    )
-  } else ok('account is upgraded (Full)')
+  // Trial is supported (D18: conference + queue routing); it only limits who can be called.
+  if (account.type === 'Trial') note('Trial account: verified numbers only, callers hear a "press any key" notice first')
+  else ok('account is upgraded (Full)')
 
   // 2 · API key used by /api/token
   if (!env.TWILIO_API_KEY_SID || !env.TWILIO_API_KEY_SECRET) {
@@ -100,7 +97,7 @@ async function main() {
   const base = env.PUBLIC_BASE_URL?.replace(/\/+$/, '')
   const voiceUrl = base ? `${base}/api/voice` : ''
   if (!base || !base.startsWith('https://')) {
-    todo('PUBLIC_BASE_URL is not an https URL', 'Run `npm run dev` and `ngrok http 5173`, put the https URL ngrok prints into PUBLIC_BASE_URL')
+    todo('PUBLIC_BASE_URL is not an https URL', 'Run `npm run dev` and `ngrok http 3000`, put the https URL ngrok prints into PUBLIC_BASE_URL')
   } else {
     ok(`webhooks will go to ${voiceUrl}`)
     try {
@@ -108,7 +105,7 @@ async function main() {
       if (res.ok) ok('app is reachable at that URL and issues tokens')
       else todo(`${base}/api/token answered HTTP ${res.status}`, 'Check the dev server is running and .env is complete, then restart `npm run dev`')
     } catch {
-      todo(`can't reach ${base}`, 'Is ngrok running and pointing at port 5173?')
+      todo(`can't reach ${base}`, 'Is ngrok running and pointing at port 3000?')
     }
   }
 

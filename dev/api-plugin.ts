@@ -1,5 +1,7 @@
+import { existsSync, readFileSync } from 'node:fs'
 import type { IncomingMessage } from 'node:http'
-import { loadEnv, type Plugin } from 'vite'
+import { parseEnv } from 'node:util'
+import type { Plugin } from 'vite'
 
 /**
  * Dev only: serve api/<name>.ts the way Vercel does (exported GET/POST taking a Web Request),
@@ -11,7 +13,8 @@ export function apiPlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use('/api', async (req, res) => {
         // Re-read .env per request: editing it (new ngrok URL, keys) needs no dev-server restart.
-        Object.assign(process.env, loadEnv('development', process.cwd(), ''))
+        // The file must win. Vite's loadEnv lets process.env win, which froze the first values loaded.
+        for (const f of ['.env', '.env.local']) if (existsSync(f)) Object.assign(process.env, parseEnv(readFileSync(f, 'utf8')))
 
         const url = new URL(req.originalUrl ?? req.url ?? '/', `http://${req.headers.host}`)
         const name = url.pathname.replace(/^\/api\/?/, '').replace(/\/$/, '')

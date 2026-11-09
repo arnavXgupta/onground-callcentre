@@ -5,7 +5,7 @@ import { apiPlugin } from './dev/api-plugin.ts'
 export default defineConfig({
   plugins: [react(), apiPlugin()],
   // Twilio reaches the dev server through ngrok.
-  server: { allowedHosts: ['.ngrok-free.app', '.ngrok-free.dev', '.ngrok.app', '.ngrok.io'] },
+  server: { port: 3000, strictPort: true, allowedHosts: ['.ngrok-free.app', '.ngrok-free.dev', '.ngrok.app', '.ngrok.io'] },
   test: {
     environment: 'jsdom',
     include: ['tests/**/*.test.{ts,tsx}'],
