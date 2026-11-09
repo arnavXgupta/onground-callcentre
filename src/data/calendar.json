@@ -1,0 +1,6 @@
+[
+  { "id": "e-callback", "offsetDays": 0, "time": "16:30", "title": "Callback · Priya Iyer", "with": "Likely billing dispute", "via": "#callcentre-team" },
+  { "id": "e-sop", "offsetDays": 1, "time": "11:00", "title": "SOP coaching session", "with": "Sunita Rao (Manager)", "via": "#callcentre-team" },
+  { "id": "e-warranty", "offsetDays": 3, "time": "14:30", "title": "Warranty pitch refresher", "with": "L&D team", "via": "flagged from your last 3 calls" },
+  { "id": "e-huddle", "offsetDays": 5, "time": "10:00", "title": "Weekly team huddle", "with": "Call Centre team", "via": "#callcentre-team" }
+]
