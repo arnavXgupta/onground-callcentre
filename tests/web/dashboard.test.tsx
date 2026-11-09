@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { callLog } from '../../src/calling/callLog'
 import { pulseStore } from '../../src/pulse/store'
 import { greeting, last7Labels } from '../../src/screens/dashboard/Dashboard'
-import { mockMicrophone, phone } from './fake-phone'
+import { mockMicrophone, mockServer, phone } from './fake-phone'
 import { renderAt } from './render'
 
 vi.mock('../../src/calling/device', async (importOriginal) => {
@@ -55,9 +55,9 @@ describe('Dashboard', () => {
   })
 
   it('the queue pill follows the softphone: Go online → On queue', async () => {
+    mockServer()
     const { user } = renderAt('/dashboard')
     await user.click(within(hero()).getByRole('button', { name: 'Off queue · Go online' }))
-    expect(phone.device.register).toHaveBeenCalled()
     expect(hero()).toHaveTextContent('On queue')
   })
 

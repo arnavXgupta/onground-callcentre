@@ -1,6 +1,6 @@
 import { act, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { phone } from './fake-phone'
+import { phone, type FakeCall } from './fake-phone'
 import { renderAt } from './render'
 
 vi.mock('../../src/calling/device', async (importOriginal) => {
@@ -77,7 +77,7 @@ describe('Calls to make', () => {
     expect(dock).toHaveTextContent('Smart Luxe Mattress · ₹13,390')
     expect(screen.getByRole('button', { name: 'On a call' })).toBeDisabled()
 
-    act(() => phone.device.last.emit('accept'))
-    expect(dock).toHaveTextContent('On call')
+    act(() => (phone.device.last as FakeCall).answer()) // agent in the room; the customer's phone rings
+    expect(dock).toHaveTextContent('Ringing…')
   })
 })

@@ -10,7 +10,7 @@ function claims(jwt: string) {
 describe('GET /api/token', () => {
   useTestEnv()
 
-  it('issues a voice token for the agent: outbound via our TwiML app, inbound allowed', async () => {
+  it('issues a voice token for the agent: outbound via our TwiML app only', async () => {
     const res = GET()
     expect(res.status).toBe(200)
     expect(res.headers.get('cache-control')).toBe('no-store')
@@ -22,7 +22,7 @@ describe('GET /api/token', () => {
     expect(c.sub).toBe(TEST_ENV.TWILIO_ACCOUNT_SID)
     expect(c.grants.identity).toBe('agent')
     expect(c.grants.voice.outgoing.application_sid).toBe(TEST_ENV.TWILIO_TWIML_APP_SID)
-    expect(c.grants.voice.incoming.allow).toBe(true)
+    expect(c.grants.voice.incoming).toBeUndefined() // the browser is never dialled (inbound uses the queue)
     expect(c.exp - c.iat).toBe(3600)
   })
 

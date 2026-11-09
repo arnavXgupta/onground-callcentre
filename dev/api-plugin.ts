@@ -9,9 +9,10 @@ export function apiPlugin(): Plugin {
   return {
     name: 'dev-api',
     configureServer(server) {
-      Object.assign(process.env, loadEnv('development', process.cwd(), ''))
-
       server.middlewares.use('/api', async (req, res) => {
+        // Re-read .env per request: editing it (new ngrok URL, keys) needs no dev-server restart.
+        Object.assign(process.env, loadEnv('development', process.cwd(), ''))
+
         const url = new URL(req.originalUrl ?? req.url ?? '/', `http://${req.headers.host}`)
         const name = url.pathname.replace(/^\/api\/?/, '').replace(/\/$/, '')
         const notFound = () => {

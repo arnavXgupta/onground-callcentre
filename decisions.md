@@ -109,3 +109,12 @@ pill is the softphone's registration, the task list is the open Pulse asks,
 "Leads called" counts calls placed in the app, and the period switch changes
 the numbers. Static sample values stay only where a backend would supply them
 (OG score, earnings, 7-day history).
+
+### D18 · Stay on the Twilio free trial: conference + queue routing (supersedes D14)
+**Why:** The user won't pay for an assignment, which is reasonable. Trial strips `<Dial><Number>`
+and `<Dial><Client>` but supports `<Dial><Conference>` and `<Enqueue>`/`<Dial><Queue>`, and a live
+test confirmed the trial account can ring the verified Indian phone. Outbound becomes "browser
+and phone join one conference" (the server rings the phone into it). Inbound becomes a real
+call queue the agent picks up from, which is how call centres work anyway and feeds "Who's
+waiting". It runs unchanged on a paid account. **Cost:** callees/callers must be verified
+numbers, calls cap at 10 minutes, and a ringing callee is detected by polling the conference.

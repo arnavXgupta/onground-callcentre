@@ -6,9 +6,21 @@ import { callReducer, callSeconds, initialCallState, type CallEvent, type CallSt
 
 export type DeviceStatus = 'offline' | 'connecting' | 'online' | 'mic_blocked' | 'error'
 
+/** A caller waiting in the inbound queue (GET /api/queue). */
+export interface QueueCaller {
+  callSid: string
+  from: string
+  waitedSec: number
+  position: number
+}
+
+/** How often the browser asks who's waiting (while online) and whether the callee joined (while ringing). */
+export const QUEUE_POLL_MS = 2000
+export const ROOM_POLL_MS = 1000
+
 export interface CallApi {
   call: CallState
-  /** Inbound availability (registration). Outbound works in any status. */
+  /** Inbound availability: online = watching the queue. Outbound works in any status. */
   status: DeviceStatus
   statusDetail?: string
   /** Short-lived message for the agent (call failed, blocked second call…). */
@@ -17,7 +29,7 @@ export interface CallApi {
   goOnline(): Promise<void>
   goOffline(): Promise<void>
   place(contact: Contact): Promise<void>
-  accept(): void
+  accept(): Promise<void>
   decline(): void
   hangup(): void
   toggleMute(): void
@@ -52,17 +64,30 @@ function logMissed(contact: Contact) {
   callLog.add({ name: contact.name, number: contact.number, leadId: contact.leadId, direction: 'missed', at: Date.now(), durationSec: 0 })
 }
 
+async function getJson<T>(url: string, init?: RequestInit): Promise<T | null> {
+  try {
+    const res = await fetch(url, init)
+    return res.ok ? ((await res.json()) as T) : null
+  } catch {
+    return null
+  }
+}
+
 export function CallProvider({ children }: { children: ReactNode }) {
   const [call, dispatch] = useReducer(callReducer, initialCallState)
   const [status, setStatus] = useState<DeviceStatus>('offline')
   const [statusDetail, setStatusDetail] = useState<string>()
   const [notice, setNotice] = useState<string>()
 
-  // Twilio fires events between renders, so handlers read this ref, kept in lockstep with the reducer.
+  // Twilio events and polls land between renders, so handlers read this ref, kept in lockstep with the reducer.
   const stateRef = useRef<CallState>(initialCallState)
   const deviceRef = useRef<Promise<PhoneDevice> | null>(null)
   const activeRef = useRef<PhoneCall | null>(null)
   const hangupRequested = useRef(false)
+  const ringingCaller = useRef<QueueCaller | null>(null) // the queued caller shown as "Incoming"
+  const pickingUp = useRef(false)
+  const dismissed = useRef(new Set<string>()) // queued calls already answered, declined or missed
+  const roomTimer = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const send = useCallback((event: CallEvent) => {
     stateRef.current = callReducer(stateRef.current, event)
@@ -77,37 +102,9 @@ export function CallProvider({ children }: { children: ReactNode }) {
     [send],
   )
 
-  const handleIncoming = useCallback(
-    (c: PhoneCall) => {
-      const contact = contactFor(c.parameters.From ?? '')
-      if (stateRef.current.phase !== 'idle') {
-        c.reject() // busy: one call at a time
-        logMissed(contact)
-        return
-      }
-      activeRef.current = c
-      c.on('accept', () => send({ type: 'CONNECTED', at: Date.now() }))
-      c.on('cancel', () => {
-        activeRef.current = null
-        if (stateRef.current.phase === 'incoming') {
-          send({ type: 'MISSED' })
-          logMissed(contact)
-        }
-      })
-      c.on('disconnect', () => {
-        activeRef.current = null
-        send({ type: 'ENDED', at: Date.now() })
-      })
-      c.on('error', (e) => setNotice(errorText(e)))
-      send({ type: 'INCOMING', contact, at: Date.now() })
-    },
-    [send],
-  )
-
   const ensureDevice = useCallback(() => {
     if (!deviceRef.current) {
       const created = createTwilioDevice().then((d) => {
-        d.onIncoming(handleIncoming)
         d.onError((e) => {
           if (MIC_BLOCKED_CODES.has(e.code ?? -1)) setStatus('mic_blocked')
           setStatusDetail(errorText(e))
@@ -120,10 +117,16 @@ export function CallProvider({ children }: { children: ReactNode }) {
       deviceRef.current = created
     }
     return deviceRef.current
-  }, [handleIncoming])
+  }, [])
+
+  const stopRoomWatch = () => {
+    if (roomTimer.current) clearInterval(roomTimer.current)
+    roomTimer.current = null
+  }
 
   useEffect(
     () => () => {
+      stopRoomWatch()
       deviceRef.current?.then((d) => d.destroy()).catch(() => {})
       deviceRef.current = null
     },
@@ -135,6 +138,47 @@ export function CallProvider({ children }: { children: ReactNode }) {
     const t = setTimeout(() => setNotice(undefined), 6000)
     return () => clearTimeout(t)
   }, [notice])
+
+  // ── inbound: watch the queue while online ──────────────
+  const onQueue = useCallback(
+    (callers: QueueCaller[]) => {
+      const s = stateRef.current
+      if (s.phase === 'incoming') {
+        const ringing = ringingCaller.current
+        if (ringing && !pickingUp.current && !callers.some((c) => c.callSid === ringing.callSid)) {
+          // They hung up, or the hold timed out, before the agent answered.
+          dismissed.current.add(ringing.callSid)
+          ringingCaller.current = null
+          if (s.contact) logMissed(s.contact)
+          send({ type: 'MISSED' })
+        }
+        return
+      }
+      // Busy agent: callers just keep waiting in the queue and ring once the agent is free.
+      const next = callers.find((c) => !dismissed.current.has(c.callSid))
+      if (s.phase === 'idle' && next) {
+        ringingCaller.current = next
+        send({ type: 'INCOMING', contact: contactFor(next.from), at: Date.now() })
+      }
+    },
+    [send],
+  )
+
+  useEffect(() => {
+    if (status !== 'online') return
+    let alive = true
+    const poll = async () => {
+      if (typeof document !== 'undefined' && document.hidden) return
+      const res = await getJson<{ callers: QueueCaller[] }>('/api/queue')
+      if (alive && res) onQueue(res.callers)
+    }
+    poll()
+    const t = setInterval(poll, QUEUE_POLL_MS)
+    return () => {
+      alive = false
+      clearInterval(t)
+    }
+  }, [status, onQueue])
 
   async function goOnline() {
     setStatus('connecting')
@@ -149,8 +193,7 @@ export function CallProvider({ children }: { children: ReactNode }) {
       return
     }
     try {
-      const d = await ensureDevice()
-      await d.register()
+      await ensureDevice() // proves the token works before we promise to ring
       setStatus('online')
     } catch (e) {
       setStatus('error')
@@ -159,9 +202,63 @@ export function CallProvider({ children }: { children: ReactNode }) {
   }
 
   async function goOffline() {
-    const d = await deviceRef.current?.catch(() => null)
-    await d?.unregister().catch(() => {})
     setStatus('offline')
+  }
+
+  async function accept() {
+    const ringing = ringingCaller.current
+    if (stateRef.current.phase !== 'incoming' || !ringing || pickingUp.current) return
+    pickingUp.current = true
+    dismissed.current.add(ringing.callSid)
+    const missed = () => {
+      const { contact } = stateRef.current
+      if (contact) logMissed(contact)
+      send({ type: 'MISSED' })
+    }
+    try {
+      const d = await ensureDevice()
+      const c = await d.connect({ pickup: '1' })
+      activeRef.current = c
+      c.on('accept', () => {
+        pickingUp.current = false
+        send({ type: 'CONNECTED', at: Date.now() })
+      })
+      c.on('disconnect', () => {
+        activeRef.current = null
+        pickingUp.current = false
+        if (stateRef.current.phase === 'incoming') missed() // queue emptied before we got there
+        else send({ type: 'ENDED', at: Date.now() })
+      })
+      c.on('error', (e) => setNotice(errorText(e)))
+    } catch (e) {
+      pickingUp.current = false
+      missed()
+      setNotice(errorText(e))
+    }
+  }
+
+  function decline() {
+    const ringing = ringingCaller.current
+    const { phase, contact } = stateRef.current
+    if (phase !== 'incoming' || !ringing || pickingUp.current) return
+    dismissed.current.add(ringing.callSid)
+    ringingCaller.current = null
+    void getJson('/api/queue', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ decline: ringing.callSid }) })
+    if (contact) logMissed(contact)
+    send({ type: 'MISSED' })
+  }
+
+  // ── outbound: browser joins the room, the server rings the phone into it ──
+  function watchRoom(agentSid: string | undefined) {
+    stopRoomWatch()
+    if (!agentSid) return
+    roomTimer.current = setInterval(async () => {
+      const res = await getJson<{ connected: boolean }>(`/api/room?agent=${agentSid}`)
+      if (res?.connected && stateRef.current.phase === 'ringing') {
+        stopRoomWatch()
+        send({ type: 'CONNECTED', at: Date.now() })
+      }
+    }, ROOM_POLL_MS)
   }
 
   async function place(contact: Contact) {
@@ -175,9 +272,13 @@ export function CallProvider({ children }: { children: ReactNode }) {
       const d = await ensureDevice()
       const c = await d.connect(contact.leadId ? { leadId: contact.leadId } : { To: contact.number })
       activeRef.current = c
-      c.on('ringing', () => send({ type: 'RINGING' }))
-      c.on('accept', () => send({ type: 'CONNECTED', at: Date.now() }))
+      // `accept` = the agent is in the room. The customer's phone is ringing until they join it.
+      c.on('accept', () => {
+        send({ type: 'RINGING' })
+        watchRoom(c.parameters.CallSid)
+      })
       c.on('disconnect', () => {
+        stopRoomWatch()
         activeRef.current = null
         send({ type: 'ENDED', at: Date.now() })
       })
@@ -195,16 +296,6 @@ export function CallProvider({ children }: { children: ReactNode }) {
       hangupRequested.current = true
       send({ type: 'ENDED', at: Date.now() })
     }
-  }
-
-  function decline() {
-    const c = activeRef.current
-    const { phase, contact } = stateRef.current
-    if (!c || phase !== 'incoming' || !contact) return
-    activeRef.current = null
-    c.reject()
-    logMissed(contact)
-    send({ type: 'MISSED' })
   }
 
   function toggleMute() {
@@ -243,9 +334,7 @@ export function CallProvider({ children }: { children: ReactNode }) {
     goOnline,
     goOffline,
     place,
-    accept: () => {
-      if (stateRef.current.phase === 'incoming') activeRef.current?.accept()
-    },
+    accept,
     decline,
     hangup,
     toggleMute,

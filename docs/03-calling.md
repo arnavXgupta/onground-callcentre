@@ -1,12 +1,80 @@
 # 03 · Calling: browser softphone ↔ real phone
 
-**Status:** built: automated + browser checks pass; live phone calls pending Twilio credentials
+**Status:** rev 3 built: tests + live endpoint checks pass; real calls being verified with the user
 **Brief:** **required** ("CALLING FEATURE working … real call to a telephone number")
 
 ## Goal
 The agent places and receives real phone calls from the browser: click a
 number → a real phone rings → both people talk; a real phone dials our number →
 the app rings → agent answers. Ends in a wrap-up that logs the call.
+
+## Rev 3 · trial-compatible routing (2026-11-09, supersedes the routing below)
+
+The user keeps the free trial (D18). A live check settled what trial allows:
+a REST call from the trial account to the verified Indian phone **connected**
+(CA39c5…, completed 23s). Twilio's trial page: `<Dial><Number>` and
+`<Dial><Client>` are stripped, while `<Dial><Conference>` (one per account,
+name replaced by the account SID, 600s cap) and `<Enqueue>` / `<Dial><Queue>`
+(names namespaced) are supported, as are `<Say>`, `<Gather>`, `<Play>`,
+`<Pause>`, `<Hangup>` and `<Leave>`. Only verified numbers can be called or call in.
+This design also works unchanged on a paid account.
+
+**Outbound (browser → phone): one conference, two legs**
+1. Browser `connect({ leadId | To })` → TwiML App → `POST /api/voice` (From `client:agent`).
+2. Server applies the same routing rules (lead → `LEAD_CALL_NUMBER`, dial pad → allowlist only), then
+   REST `calls.create({ to: dest, from: TWILIO_PHONE_NUMBER, twiml: <Dial><Conference endConferenceOnExit>room</Conference></Dial>,
+   statusCallback: /api/voice?leg=pstn (completed) })`.
+3. Server returns the browser leg `<Dial action="/api/voice?leg=agent"><Conference endConferenceOnExit beep=false>room</Conference></Dial>`.
+4. Browser `accept` = the agent joined the room → UI **Ringing**. The browser polls `GET /api/room` (1s,
+   ringing only) → participants ≥ 2 → **On call**.
+5. Callee busy / no-answer / failed (PSTN `statusCallback`) → server ends the conference → the browser
+   leg disconnects → wrap-up "Not connected". Agent hangs up while it's still ringing (`?leg=agent`
+   action) → server cancels the ringing PSTN leg.
+
+**Inbound (phone → browser): a real queue**
+1. Number → `POST /api/voice` (From a phone) → `<Say>` greeting + `<Enqueue waitUrl="/api/voice?wait=1" action="/api/voice?left=1">callers</Enqueue>`.
+2. `?wait=1`: `<Say>` "please hold" + `<Pause>`; once `QueueTime` > 30s → `<Leave/>`.
+3. `?left=1`: `QueueResult` = `leave` → `<Say>` "sorry we missed you, we'll call back" + `<Hangup/>`; otherwise `<Hangup/>`.
+4. Browser, when **online**, polls `GET /api/queue` (2s) → `{ callers: [{ callSid, from, waitedSec }] }`.
+   The first caller rings in the dock. Accept → `connect({ pickup: '1' })` → `<Dial><Queue>callers</Queue></Dial>`.
+   Decline → `POST /api/queue { decline: callSid }` → server redirects that call to the apology + hangup.
+   The caller vanishes from the poll before Accept → **missed** (logged).
+5. While the agent is on a call, new callers simply wait in the queue (no auto-reject) and ring once
+   the agent is free. That's better call-centre behaviour than the rev-2 busy-reject.
+
+**Frontend deltas:** `PhoneDevice` drops `register` / `onIncoming` / `allowIncomingWhileBusy` (the
+browser is never dialled now). "Go online" = mic permission + device + queue polling. Outbound
+`accept` → RINGING, room poll → CONNECTED (machine unchanged).
+
+**New/changed endpoints:** `api/voice.ts` (routes above), `api/room.ts` (GET participants),
+`api/queue.ts` (GET waiting callers, POST decline). Pure TwiML builders stay in `server/voice.ts`.
+All webhook branches keep signature validation (query string included).
+
+**Known limits:** 10-minute calls on trial; a single agent; trial callees and callers must be verified
+numbers; `/api/queue` returns caller numbers without auth (demo scope, noted in the README).
+
+**Rev 3 review (independent subagent, 2026-11-09): approve with fixes, all applied:**
+- BLOCKER: a `<Dial action>` isn't reliably requested when the agent hangs up first, and it
+  carries no `DialCallSid` for conferences. Cleanup now hangs on the **agent's own conference
+  entry**: `statusCallback=${BASE}/api/voice?leg=room&agent=<CallSid>&pstn=<sid>`,
+  `statusCallbackEvent="leave end"`. On `participant-leave` / `conference-end`, end both calls.
+  The SIDs ride in the signed URL; no lookups.
+- BLOCKER: end calls with `status: 'completed'` (also ends an answered leg), not `canceled`.
+  Otherwise a callee who answered at the last second sits alone in the account's single room.
+- Every callback URL is absolute (`PUBLIC_BASE_URL`). Query branches are checked before `From`.
+  The PSTN leg's `statusCallback=${BASE}/api/voice?leg=pstn&agent=<CallSid>` (default event
+  `completed`) ends the agent's call.
+- waitUrl is **one** document (`<Say>` + `<Pause length=25>` + `<Leave/>`): each waitUrl fetch is a
+  trial "hop" (max 10). `?left=1`: `QueueResult=leave` → apology; anything else → empty `<Response/>`.
+- `/api/room?agent=<CallSid>`: in-progress conferences → participants. Connected only if the
+  agent's own CallSid is in the list and there are ≥ 2 participants (stale rooms ignored).
+- `/api/queue`: `queues.list()` → `callers` or `callers-<AccountSid>`. Members have no From, so
+  `calls(callSid).fetch()` each. Pickup only if `currentSize > 0`, else `<Say>` + `<Hangup/>`.
+  Decline only works on a call that is currently a member (no hanging up arbitrary calls).
+- Trial plays a "press any key" notice to the callee before our TwiML: participant count is the
+  right "connected" signal. Budget: 75 voice-minutes total, 5s TwiML timeout (`calls.create` is
+  well inside it). Polling pauses when the tab is hidden; Token `incomingAllow: false`.
+- Confirmed in the SDK source: an outbound call's `parameters.CallSid` is set before `accept` fires.
 
 ## Mock reference
 - Place call / Call back → (consent sheet) → **in-call card**: "CALL IN
@@ -193,5 +261,17 @@ with fixes. All applied above:
   closed it again. The input now takes focus on the popover's `toggle` event.
 - Fixed: `.dialPop` width lost to `.popover` (same specificity, later rule).
 
-**Pending (needs the user's Twilio setup):** real outbound, lead routing, inbound
+2026-11-09 · rev 3 (trial-compatible)
+- `npm test`: 228/228. Server: TwiML builders, every webhook branch (lead → ring into room, refused,
+  Twilio refusal → spoken reason, pickup with/without callers, inbound → queue, PSTN leg done →
+  agent freed, room leave/end → both legs ended, join ignored, non-SID query ignored, wait/left,
+  forged/missing/tampered-query signatures → 403), /api/queue (list, decline only queued calls,
+  bad body, Twilio failure → 502), /api/room. Browser: room polling (ringing → on call, stops once
+  connected), queue polling (ring, pickup not counted as missed, caller leaves → missed, decline →
+  server + not re-rung, busy agent → caller waits then rings).
+- Live, through ngrok against the real trial account: REST call to the verified Indian phone
+  answered (23s); signed callback → TwiML, forged → 403; /api/queue and /api/room read the real
+  account; `twilio:check` all green except "Trial", which is now by design.
+
+**Previously pending (needs the user's Twilio setup):** real outbound, lead routing, inbound
 ring/accept/missed, DTMF and mute on a live call, the 390px dock.

@@ -17,12 +17,13 @@ export interface DeviceError {
   message: string
 }
 
+/**
+ * The browser only ever calls out (decisions D18): to a customer via the conference room, or to
+ * pick up a queued caller. It is never dialled, so there's no registration or incoming handler.
+ */
 export interface PhoneDevice {
-  register(): Promise<void>
-  unregister(): Promise<void>
-  /** Outbound call. Params reach /api/voice as form fields: { leadId } or { To }. */
+  /** Params reach /api/voice as form fields: { leadId } | { To } | { pickup: '1' }. */
   connect(params: Record<string, string>): Promise<PhoneCall>
-  onIncoming(listener: (call: PhoneCall) => void): void
   onError(listener: (error: DeviceError) => void): void
   destroy(): void
 }
@@ -37,17 +38,11 @@ async function fetchToken(): Promise<string> {
 export async function createTwilioDevice(): Promise<PhoneDevice> {
   // Loaded on first use so the SDK stays out of the initial bundle.
   const [{ Device }, token] = await Promise.all([import('@twilio/voice-sdk'), fetchToken()])
-  const device = new Device(token, {
-    allowIncomingWhileBusy: true, // otherwise a busy agent's inbound call vanishes with no event
-    closeProtection: 'A call is in progress. Leaving will hang up.',
-  })
+  const device = new Device(token, { closeProtection: 'A call is in progress. Leaving will hang up.' })
   device.on('tokenWillExpire', async () => device.updateToken(await fetchToken()))
 
   return {
-    register: () => device.register(),
-    unregister: () => device.unregister(),
     connect: (params) => device.connect({ params }),
-    onIncoming: (listener) => device.on('incoming', listener),
     onError: (listener) => device.on('error', listener),
     destroy: () => device.destroy(),
   }

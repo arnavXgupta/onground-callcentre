@@ -1,7 +1,8 @@
 import { act, screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { callLog } from '../../src/calling/callLog'
-import { phone, mockMicrophone } from './fake-phone'
+import { QUEUE_POLL_MS, ROOM_POLL_MS } from '../../src/calling/CallProvider'
+import { mockMicrophone, mockServer, phone, server } from './fake-phone'
 import { renderAt } from './render'
 
 vi.mock('../../src/calling/device', async (importOriginal) => {
@@ -18,35 +19,46 @@ vi.mock('../../src/calling/device', async (importOriginal) => {
 
 const dock = () => screen.getByRole('region', { name: 'Call' })
 const wrapUp = () => screen.getByRole('dialog')
+/** Let the pollers (setInterval only is faked) run, and their fetches resolve. */
+const tick = (ms: number) => act(async () => void (await vi.advanceTimersByTimeAsync(ms)))
 
 async function dialFromPad(user: ReturnType<typeof renderAt>['user'], number = '98000 00002') {
   await user.type(screen.getByRole('textbox', { name: 'Phone number', hidden: true }), number)
   await user.click(screen.getByRole('button', { name: 'Call', hidden: true }))
 }
 
+const caller = (callSid: string, from: string) => ({ callSid, from, waitedSec: 3, position: 1 })
+
 beforeEach(() => {
   phone.reset()
+  server.reset()
   callLog.clear()
   mockMicrophone(true)
+  mockServer()
+  vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] })
 })
 
 afterEach(() => {
   vi.useRealTimers()
+  vi.unstubAllGlobals()
 })
 
-describe('outbound call', () => {
-  it('walks dial → ringing → on call → mute → keypad → end → wrap-up → saved to the log', async () => {
+describe('outbound call (browser and phone meet in one room)', () => {
+  it('dial → ringing until the callee joins → on call → mute → keypad → end → wrap-up → logged', async () => {
     const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
-
     expect(phone.device.connect).toHaveBeenCalledWith({ To: '98000 00002' })
     expect(dock()).toHaveTextContent('Calling…')
 
-    act(() => phone.device.last.emit('ringing'))
+    act(() => phone.device.last.answer()) // the agent's leg is in the room
     expect(dock()).toHaveTextContent('Ringing…')
+    await tick(ROOM_POLL_MS)
+    expect(dock()).toHaveTextContent('Ringing…') // phone still ringing
 
-    act(() => phone.device.last.emit('accept'))
+    server.connected = true // callee picked up and joined
+    await tick(ROOM_POLL_MS)
     expect(dock()).toHaveTextContent('On call')
+    expect(fetch).toHaveBeenCalledWith(`/api/room?agent=CA${'a'.repeat(32)}`, undefined)
     expect(within(dock()).getByLabelText('Call duration')).toHaveTextContent('00:00')
 
     const mute = within(dock()).getByRole('button', { name: 'Mute' })
@@ -74,29 +86,28 @@ describe('outbound call', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(callLog.getSnapshot()).toEqual([
-      expect.objectContaining({
-        name: '98000 00002',
-        direction: 'outgoing',
-        outcome: 'Interested',
-        summary: 'Wants delivery this week',
-      }),
+      expect.objectContaining({ name: '98000 00002', direction: 'outgoing', outcome: 'Interested', summary: 'Wants delivery this week' }),
     ])
   })
 
-  it('ticks the timer while connected', async () => {
+  it('stops polling the room once connected', async () => {
     const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
-    vi.useFakeTimers({ shouldAdvanceTime: false })
-    act(() => phone.device.last.emit('accept'))
-    act(() => vi.advanceTimersByTime(65_000))
-    expect(within(dock()).getByLabelText('Call duration')).toHaveTextContent('01:05')
+    act(() => phone.device.last.answer())
+    server.connected = true
+    await tick(ROOM_POLL_MS)
+    const roomCalls = () => vi.mocked(fetch).mock.calls.filter(([u]) => String(u).startsWith('/api/room')).length
+    const before = roomCalls()
+    await tick(ROOM_POLL_MS * 3)
+    expect(roomCalls()).toBe(before)
   })
 
-  it('a call nobody answers lands in wrap-up as "Not connected", with No answer preselected', async () => {
+  it('a callee who never joins ends as "Not connected", with No answer preselected', async () => {
     const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
-    act(() => phone.device.last.emit('ringing'))
-    act(() => phone.device.last.emit('disconnect'))
+    act(() => phone.device.last.answer())
+    await tick(ROOM_POLL_MS * 2)
+    act(() => phone.device.last.emit('disconnect')) // server ended the room: busy / no answer
 
     expect(within(wrapUp()).getByText('Not connected · just now')).toBeInTheDocument()
     expect(within(wrapUp()).getByRole('button', { name: 'No answer' })).toHaveAttribute('aria-pressed', 'true')
@@ -127,7 +138,7 @@ describe('outbound call', () => {
   })
 
   it('a failure before connecting shows why and leaves nothing behind', async () => {
-    phone.createError = new Error("Server is missing env: TWILIO_API_KEY_SID")
+    phone.createError = new Error('Server is missing env: TWILIO_API_KEY_SID')
     const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     expect(screen.getByRole('alert')).toHaveTextContent('TWILIO_API_KEY_SID')
@@ -138,7 +149,7 @@ describe('outbound call', () => {
   it('blocks a second call while one is live', async () => {
     const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
-    act(() => phone.device.last.emit('accept'))
+    act(() => phone.device.last.answer())
     expect(screen.getByRole('button', { name: 'Dial pad' })).toBeDisabled()
 
     await dialFromPad(user, '98000 00003')
@@ -148,87 +159,99 @@ describe('outbound call', () => {
 })
 
 describe('going online', () => {
-  it('asks for the mic, registers, and shows Online; clicking again goes offline', async () => {
+  it('asks for the mic, readies the phone and starts watching the queue; offline stops it', async () => {
     const getUserMedia = mockMicrophone(true)
     const { user } = renderAt('/plan/recent')
     await user.click(screen.getByRole('button', { name: 'Go online' }))
     expect(getUserMedia).toHaveBeenCalledWith({ audio: true })
-    expect(phone.device.register).toHaveBeenCalled()
+    expect(screen.getByRole('button', { name: 'Online' })).toBeInTheDocument()
+    await tick(0) // the poller starts in an effect
+    expect(fetch).toHaveBeenCalledWith('/api/queue', undefined)
+
     await user.click(screen.getByRole('button', { name: 'Online' }))
-    expect(phone.device.unregister).toHaveBeenCalled()
     expect(screen.getByRole('button', { name: 'Go online' })).toBeInTheDocument()
+    const polls = vi.mocked(fetch).mock.calls.length
+    await tick(QUEUE_POLL_MS * 3)
+    expect(vi.mocked(fetch).mock.calls.length).toBe(polls)
   })
 
-  it('shows Mic blocked and does not register when the mic is denied', async () => {
+  it('shows Mic blocked and stays offline when the mic is denied', async () => {
     mockMicrophone(false)
     const { user } = renderAt('/plan/recent')
     await user.click(screen.getByRole('button', { name: 'Go online' }))
     expect(screen.getByRole('button', { name: 'Mic blocked' })).toHaveAttribute('title', expect.stringContaining('address bar'))
-    expect(phone.device.register).not.toHaveBeenCalled()
+    expect(fetch).not.toHaveBeenCalledWith('/api/queue', undefined)
   })
 })
 
-describe('inbound call', () => {
+describe('inbound call (picked up from the queue)', () => {
   async function online() {
     const r = renderAt('/plan/recent')
     await r.user.click(screen.getByRole('button', { name: 'Go online' }))
     return r
   }
 
-  it('rings with the caller named from the CRM, accept → on call → caller hangs up → wrap-up', async () => {
+  it('a queued caller rings, named from the CRM; accept picks them up; their hang-up → wrap-up', async () => {
     const { user } = await online()
-    let call!: ReturnType<typeof phone.device.ringIn>
-    act(() => {
-      call = phone.device.ringIn('+919876543210')
-    })
+    server.queue = [caller('CA1', '+919876543210')]
+    await tick(QUEUE_POLL_MS)
     expect(dock()).toHaveTextContent('Incoming call')
     expect(dock()).toHaveTextContent('Mukunda')
 
     await user.click(within(dock()).getByRole('button', { name: 'Accept' }))
-    expect(call.accept).toHaveBeenCalled()
+    expect(phone.device.connect).toHaveBeenCalledWith({ pickup: '1' })
+    server.queue = [] // dequeued by the pickup: must not count as missed
+    await tick(QUEUE_POLL_MS)
+    act(() => phone.device.last.answer())
     expect(dock()).toHaveTextContent('On call')
 
-    act(() => call.emit('disconnect'))
+    act(() => phone.device.last.emit('disconnect'))
     await user.click(within(wrapUp()).getByRole('button', { name: 'Resolved' }))
     await user.click(within(wrapUp()).getByRole('button', { name: 'Save' }))
     expect(callLog.getSnapshot()[0]).toMatchObject({ name: 'Mukunda', leadId: 'mukunda', direction: 'incoming', outcome: 'Resolved' })
   })
 
-  it('logs a missed call when the caller hangs up before it is answered', async () => {
+  it('a caller who leaves the queue before being answered is logged as missed', async () => {
     await online()
-    let call!: ReturnType<typeof phone.device.ringIn>
-    act(() => {
-      call = phone.device.ringIn('+15550001111')
-    })
+    server.queue = [caller('CA2', '+15550001111')]
+    await tick(QUEUE_POLL_MS)
     expect(dock()).toHaveTextContent('+15550001111')
-    act(() => call.emit('cancel'))
+
+    server.queue = []
+    await tick(QUEUE_POLL_MS)
     expect(screen.queryByRole('region', { name: 'Call' })).not.toBeInTheDocument()
     expect(callLog.getSnapshot()[0]).toMatchObject({ name: '+15550001111', direction: 'missed' })
   })
 
-  it('declining rejects the call and logs it as missed', async () => {
+  it('declining tells the server, logs a missed call and does not ring for the same caller again', async () => {
     const { user } = await online()
-    let call!: ReturnType<typeof phone.device.ringIn>
-    act(() => {
-      call = phone.device.ringIn('+15550001111')
-    })
+    server.queue = [caller('CA3', '+15550001111')]
+    await tick(QUEUE_POLL_MS)
     await user.click(within(dock()).getByRole('button', { name: 'Decline' }))
-    expect(call.reject).toHaveBeenCalled()
+    expect(server.declined).toEqual(['CA3'])
     expect(callLog.getSnapshot()[0]).toMatchObject({ direction: 'missed' })
+
+    await tick(QUEUE_POLL_MS) // still listed for a moment while Twilio redirects them
+    expect(screen.queryByRole('region', { name: 'Call' })).not.toBeInTheDocument()
   })
 
-  it('rejects a second caller while busy, logs them as missed, and keeps the live call', async () => {
+  it('while the agent is on a call, new callers wait in the queue and ring once the agent is free', async () => {
     const { user } = await online()
     await dialFromPad(user)
-    act(() => phone.device.last.emit('accept'))
+    act(() => phone.device.last.answer())
+    server.connected = true
+    await tick(ROOM_POLL_MS)
 
-    let second!: ReturnType<typeof phone.device.ringIn>
-    act(() => {
-      second = phone.device.ringIn('+15550002222')
-    })
-    expect(second.reject).toHaveBeenCalled()
-    expect(callLog.getSnapshot()[0]).toMatchObject({ name: '+15550002222', direction: 'missed' })
+    server.queue = [caller('CA4', '+15550002222')]
+    await tick(QUEUE_POLL_MS)
     expect(dock()).toHaveTextContent('On call')
     expect(dock()).toHaveTextContent('98000 00002')
+    expect(callLog.getSnapshot()).toHaveLength(0) // not rejected, not missed
+
+    act(() => phone.device.last.emit('disconnect'))
+    await user.click(within(wrapUp()).getByRole('button', { name: 'Skip' }))
+    await tick(QUEUE_POLL_MS)
+    expect(dock()).toHaveTextContent('Incoming call')
+    expect(dock()).toHaveTextContent('+15550002222')
   })
 })
