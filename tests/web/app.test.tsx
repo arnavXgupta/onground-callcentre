@@ -6,8 +6,8 @@ describe('routing', () => {
   it.each([
     ['/dashboard', 'Dashboard'],
     ['/plan/outgoing', 'Planned outgoing calls'],
-    ['/plan/incoming', 'Incoming'],
-    ['/plan/recent', 'Recent'],
+    ['/plan/incoming', 'Missed calls'],
+    ['/plan/recent', 'Recent calls'],
     ['/plan/practise', 'Practise'],
     ['/calendar', 'Calendar'],
     ['/pulse', 'Pulse'],

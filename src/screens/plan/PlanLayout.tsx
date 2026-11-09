@@ -1,12 +1,16 @@
 import { Navigate, NavLink, useParams } from 'react-router'
 import PageHeader from '../../components/ui/PageHeader'
 import { todayChip } from '../../lib/format'
+import Incoming from './Incoming'
 import Outgoing from './Outgoing'
+import Recent from './Recent'
 import { isPlanTab, PLAN_TABS, type PlanTab } from './tabs'
 import s from './Plan.module.css'
 
 const PANELS: Partial<Record<PlanTab, () => React.JSX.Element>> = {
   outgoing: Outgoing,
+  incoming: Incoming,
+  recent: Recent,
 }
 
 export default function PlanLayout() {

@@ -9,8 +9,8 @@ the shell, before the screens that hang off it.
 | 02 | App shell: sidebar, top bar, phone tab bar | must | [02](02-app-shell.md) | done |
 | 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | [03](03-calling.md) | built; live calls pending Twilio |
 | 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | [04](04-calls-to-make.md) | done |
-| 05 | Plan · Incoming: missed calls, value at stake, Call back | must | 05 | – |
-| 06 | Plan · Recent: call log by type/time/length, review modal | must | 06 | – |
+| 05 | Plan · Incoming: missed calls, value at stake, Call back | must | [05](05-incoming.md) | done |
+| 06 | Plan · Recent: call log by type/time/length, review modal | must | [06](06-recent.md) | done |
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
 | 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | 08 | – |
 | 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | 09 | – |

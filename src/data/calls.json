@@ -1,0 +1,105 @@
+[
+  {
+    "id": "s-mukunda-in",
+    "name": "Mukunda R.",
+    "leadId": "mukunda",
+    "number": "+91 98765 43210",
+    "direction": "incoming",
+    "daysAgo": 0,
+    "time": "10:42",
+    "durationSec": 252,
+    "sop": [
+      { "step": "Opening & intent confirm", "pass": true, "evidence": "\"This is Aditi calling from The Sleep Company, is now an okay time?\"" },
+      { "step": "Needs discovery", "pass": true, "evidence": "\"Can I ask what matters most to you, firmness or price?\"" },
+      { "step": "Product pitch", "pass": true, "evidence": "\"The GRID layer gives pressure relief exactly where you need it.\"" },
+      { "step": "EMI / financing mention", "pass": true, "evidence": "\"We do have a 6-month no-cost EMI plan if that helps.\"" },
+      { "step": "Warranty mention", "pass": false, "evidence": "No mention of the warranty period anywhere in the call." },
+      { "step": "Closing / callback booking", "pass": true, "evidence": "\"I'll send the quote over and follow up Thursday, does that work?\"" }
+    ]
+  },
+  {
+    "id": "s-ritu-missed",
+    "name": "Ritu S.",
+    "leadId": "ritu-s",
+    "number": "+91 98450 00001",
+    "direction": "missed",
+    "daysAgo": 0,
+    "time": "11:20",
+    "durationSec": 0
+  },
+  {
+    "id": "s-faizan-missed",
+    "name": "Faizan A.",
+    "leadId": "faizan-a",
+    "number": "+91 96543 21098",
+    "direction": "missed",
+    "daysAgo": 0,
+    "time": "10:05",
+    "durationSec": 0
+  },
+  {
+    "id": "s-kavitha-out",
+    "name": "Kavitha R.",
+    "leadId": "kavitha-r",
+    "number": "+91 97654 32109",
+    "direction": "outgoing",
+    "daysAgo": 1,
+    "time": "11:50",
+    "durationSec": 125,
+    "sop": [
+      { "step": "Opening & intent confirm", "pass": true, "evidence": "\"Hi, calling about your enquiry. Good time to talk?\"" },
+      { "step": "Needs discovery", "pass": true, "evidence": "\"So tell me, what are you looking for exactly?\"" },
+      { "step": "Product pitch", "pass": false, "evidence": "Jumped to price before confirming what she actually needs." },
+      { "step": "EMI / financing mention", "pass": true, "evidence": "\"There's an EMI option starting at ₹1,200 a month.\"" },
+      { "step": "Warranty mention", "pass": false, "evidence": "No warranty details were shared." },
+      { "step": "Closing / callback booking", "pass": false, "evidence": "Call ended without a next step or callback time." }
+    ]
+  },
+  {
+    "id": "s-kavitha-missed",
+    "name": "Kavitha R.",
+    "leadId": "kavitha-r",
+    "number": "+91 97654 32109",
+    "direction": "missed",
+    "daysAgo": 1,
+    "time": "16:40",
+    "durationSec": 0
+  },
+  {
+    "id": "s-divya-missed",
+    "name": "Divya P.",
+    "leadId": "divya-p",
+    "number": "+91 90000 44556",
+    "direction": "missed",
+    "daysAgo": 1,
+    "time": "14:15",
+    "durationSec": 0
+  },
+  {
+    "id": "s-unknown-missed",
+    "name": "Unknown",
+    "number": "+91 80412 55770",
+    "direction": "missed",
+    "daysAgo": 1,
+    "time": "12:30",
+    "durationSec": 0
+  },
+  {
+    "id": "s-faizan-out",
+    "name": "Faizan A.",
+    "leadId": "faizan-a",
+    "number": "+91 96543 21098",
+    "direction": "outgoing",
+    "daysAgo": 3,
+    "time": "15:20",
+    "durationSec": 400,
+    "sop": [
+      { "step": "Opening & intent confirm", "pass": true, "evidence": "\"Hello, this is Aditi from The Sleep Company.\"" },
+      { "step": "Needs discovery", "pass": true, "evidence": "\"What's brought this on? Any specific concern with sleep or back pain?\"" },
+      { "step": "Product pitch", "pass": true, "evidence": "\"Given what you described, the Tranquo would be the right fit.\"" },
+      { "step": "EMI / financing mention", "pass": false, "evidence": "He asked about payment plans, but it wasn't addressed on the call." },
+      { "step": "Warranty mention", "pass": true, "evidence": "\"It comes with a 3-year warranty, so you're covered either way.\"" },
+      { "step": "Closing / callback booking", "pass": true, "evidence": "\"Let's speak Monday once you've decided. I'll call at 11.\"" }
+    ]
+  }
+]

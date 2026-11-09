@@ -47,3 +47,10 @@ export interface Lead {
   signals: { category: string; text: string }[]
   journey: { date: string; channel: string; text: string }[]
 }
+
+export interface SopItem {
+  step: string
+  pass: boolean
+  /** A quoted line from the call when passed; the reason when missed. */
+  evidence: string
+}

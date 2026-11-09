@@ -65,3 +65,13 @@ export const callLog = {
 export function useCallLog(): CallLogEntry[] {
   return useSyncExternalStore(callLog.subscribe, callLog.getSnapshot)
 }
+
+/** Pill colour per outcome (Recent list, review modal). */
+export const OUTCOME_TONE: Record<Outcome, 'brand' | 'info' | 'danger' | 'neutral'> = {
+  Interested: 'brand',
+  Resolved: 'brand',
+  'Follow-up needed': 'info',
+  'Requested callback': 'info',
+  'Not interested': 'danger',
+  'No answer': 'neutral',
+}
