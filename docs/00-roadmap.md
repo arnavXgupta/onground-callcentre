@@ -8,7 +8,7 @@ the shell, before the screens that hang off it.
 | 01 | Foundation: scaffold, tokens, routing skeleton, test harness | – | [01](01-foundation.md) | done |
 | 02 | App shell: sidebar, top bar, phone tab bar | must | [02](02-app-shell.md) | done |
 | 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | [03](03-calling.md) | built; live calls pending Twilio |
-| 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | [04](04-calls-to-make.md) | reviewed |
+| 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | [04](04-calls-to-make.md) | done |
 | 05 | Plan · Incoming: missed calls, value at stake, Call back | must | 05 | – |
 | 06 | Plan · Recent: call log by type/time/length, review modal | must | 06 | – |
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |

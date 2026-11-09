@@ -210,3 +210,104 @@
     border-radius: var(--r-lg) var(--r-lg) 0 0;
   }
 }
+
+/* ── avatar ───────────────────────────────────────────── */
+.avatar {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.avatar[data-tint='0'] { background: var(--brand-tint); color: var(--brand-strong); }
+.avatar[data-tint='1'] { background: var(--info-tint); color: var(--info); }
+.avatar[data-tint='2'] { background: var(--warn-tint); color: var(--warn); }
+.avatar[data-tint='3'] { background: var(--ai-tint); color: var(--ai); }
+.avatar[data-tint='4'] { background: var(--danger-tint); color: var(--danger); }
+.avatar[data-tint='5'] { background: #eef0f3; color: var(--text-muted); }
+
+/* ── pill / badge ─────────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  height: 22px;
+  padding: 0 var(--sp-2);
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pill[data-tone='brand'] { background: var(--brand-tint); color: var(--brand-strong); }
+.pill[data-tone='warn'] { background: var(--warn-tint); color: var(--warn); }
+.pill[data-tone='danger'] { background: var(--danger-tint); color: var(--danger); }
+.pill[data-tone='info'] { background: var(--info-tint); color: var(--info); }
+.pill[data-tone='ai'] { background: var(--ai-tint); color: var(--ai); }
+.pill[data-tone='neutral'] { background: #eef0f3; color: var(--text-muted); }
+
+/* ── page header ──────────────────────────────────────── */
+.pageHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+}
+
+.eyebrow {
+  color: var(--text-subtle);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pageTitle {
+  font-size: var(--fs-xl);
+  line-height: var(--lh-xl);
+  font-weight: 700;
+}
+
+/* ── card ─────────────────────────────────────────────── */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+
+/* ── pager ────────────────────────────────────────────── */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-4);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.pager button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.pager button:hover:not(:disabled) {
+  border-color: var(--brand);
+}
+
+.pager button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

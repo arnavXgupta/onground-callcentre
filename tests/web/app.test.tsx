@@ -5,10 +5,10 @@ import { renderAt } from './render'
 describe('routing', () => {
   it.each([
     ['/dashboard', 'Dashboard'],
-    ['/plan/outgoing', 'Plan · outgoing'],
-    ['/plan/incoming', 'Plan · incoming'],
-    ['/plan/recent', 'Plan · recent'],
-    ['/plan/practise', 'Plan · practise'],
+    ['/plan/outgoing', 'Planned outgoing calls'],
+    ['/plan/incoming', 'Incoming'],
+    ['/plan/recent', 'Recent'],
+    ['/plan/practise', 'Practise'],
     ['/calendar', 'Calendar'],
     ['/pulse', 'Pulse'],
     ['/pulse/callcentre-team', 'Pulse · callcentre-team'],
@@ -29,11 +29,11 @@ describe('routing', () => {
 
   it('an unknown plan tab falls back to Calls to make', () => {
     renderAt('/plan/nonsense')
-    expect(screen.getByRole('heading', { name: 'Plan · outgoing' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Planned outgoing calls' })).toBeInTheDocument()
   })
 
   it('/plan alone opens Calls to make', () => {
     renderAt('/plan')
-    expect(screen.getByRole('heading', { name: 'Plan · outgoing' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Planned outgoing calls' })).toBeInTheDocument()
   })
 })

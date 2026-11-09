@@ -36,9 +36,9 @@ describe('sidebar nav', () => {
   it('swaps the screen when a link is clicked', async () => {
     const { user } = renderAt('/dashboard')
     await user.click(nav().getByRole('link', { name: 'Recent' }))
-    expect(screen.getByRole('heading', { name: 'Plan · recent' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Recent' })).toBeInTheDocument()
     await user.click(nav().getByRole('link', { name: 'Plan' }))
-    expect(screen.getByRole('heading', { name: 'Plan · outgoing' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Planned outgoing calls' })).toBeInTheDocument()
   })
 })
 
@@ -72,7 +72,7 @@ describe('top bar', () => {
     const { user } = renderAt('/dashboard')
     expect(screen.getAllByRole('listitem', { hidden: true }).filter((li) => li.closest('[popover]'))).toHaveLength(6)
     await user.click(screen.getByRole('button', { name: 'Open incoming', hidden: true }))
-    expect(screen.getByRole('heading', { name: 'Plan · incoming' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Incoming' })).toBeInTheDocument()
   })
 
   it('account menu shows who is signed in', () => {

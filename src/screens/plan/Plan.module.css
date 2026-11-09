@@ -1,0 +1,217 @@
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.dateChip {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* phone-only segmented control (the sidebar carries these links on desktop) */
+.segmented {
+  display: none;
+}
+
+.sectionHead {
+  margin-bottom: var(--sp-3);
+}
+
+.sectionHead h2 {
+  font-size: var(--fs-lg);
+  line-height: var(--lh-lg);
+  font-weight: 600;
+}
+
+.sectionHead p {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+/* ── rows ─────────────────────────────────────────────── */
+.list {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.rowHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: 64px;
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+}
+
+button.rowHead:hover {
+  background: var(--surface-muted);
+}
+
+.rowMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rowTitle {
+  font-weight: 600;
+}
+
+.rowMeta {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowSide {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-1);
+}
+
+.score {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  min-width: 44px;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--r-md);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.score small {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.score[data-tone='brand'] { background: var(--brand-tint); color: var(--brand-strong); }
+.score[data-tone='warn'] { background: var(--warn-tint); color: var(--warn); }
+.score[data-tone='danger'] { background: var(--danger-tint); color: var(--danger); }
+
+.chevron {
+  flex: none;
+  color: var(--text-subtle);
+  transition: transform 0.2s;
+}
+
+[aria-expanded='true'] > .chevron {
+  transform: rotate(180deg);
+}
+
+/* ── expanded detail ──────────────────────────────────── */
+.detail {
+  display: grid;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-4) var(--sp-4);
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-3);
+}
+
+.label {
+  margin-bottom: 2px;
+  color: var(--text-subtle);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.story {
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+
+.tile {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface-muted);
+  font-size: var(--fs-sm);
+}
+
+.emi {
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid #f1d9a8;
+  border-radius: var(--r-md);
+  background: var(--warn-tint);
+  font-size: var(--fs-sm);
+}
+
+.emi .label {
+  color: var(--warn);
+}
+
+@media (max-width: 767px) {
+  .segmented {
+    display: flex;
+    gap: 2px;
+    margin-bottom: var(--sp-4);
+    padding: 3px;
+    border-radius: var(--r-md);
+    background: #e9ebee;
+    overflow-x: auto;
+  }
+
+  .segmented a {
+    flex: 1;
+    padding: var(--sp-1) var(--sp-2);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .segmented a.segActive {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-card);
+  }
+
+  .tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .rowHead {
+    padding: var(--sp-3);
+  }
+}
