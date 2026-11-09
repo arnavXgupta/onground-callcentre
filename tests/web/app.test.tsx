@@ -11,7 +11,7 @@ describe('routing', () => {
     ['/plan/practise', 'Practise'],
     ['/calendar', 'Calendar'],
     ['/pulse', 'Pulse'],
-    ['/pulse/callcentre-team', 'Pulse · callcentre-team'],
+    ['/pulse/callcentre-team', '#callcentre-team'],
   ])('%s renders its screen', (path, heading) => {
     renderAt(path)
     expect(screen.getByRole('heading', { name: heading })).toBeInTheDocument()

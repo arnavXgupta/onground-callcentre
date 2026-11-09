@@ -14,8 +14,8 @@ the shell, before the screens that hang off it.
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
 | 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | 08 | – |
 | 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | [09](09-leads-modal.md) | done |
-| 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | 10 | – |
-| 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | 11 | – |
+| 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | [10](10-pulse-home.md) | done |
+| 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | [11](11-pulse-channel.md) | done |
 | 12 | Calendar: month grid, event dots, Today, month switcher | must | 12 | – |
 | 13 | Practise a call | bonus | 13 | – |
 | 14 | Deploy, README, demo recording | **required** | 14 | – |

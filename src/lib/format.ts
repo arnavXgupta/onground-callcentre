@@ -52,3 +52,6 @@ export function formatWhen(at: number, now = Date.now()): string {
   if (days < 7) return `${weekday.format(at)} ${timeOfDay(at)}`
   return shortDate.format(at)
 }
+
+/** "Attach rate" → "attach rate", but acronyms stay: "SOP adherence" → "SOP adherence". */
+export const lowerFirst = (s: string) => s.replace(/^[A-Z](?=[a-z])/, (c) => c.toLowerCase())

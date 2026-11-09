@@ -1,0 +1,271 @@
+{
+  "workspace": "The Sleep Company · Koramangala",
+  "channels": [
+    {
+      "id": "callcentre-team",
+      "kind": "channel",
+      "title": "#callcentre-team",
+      "subtitle": "Call Centre Team",
+      "preview": "Manager: Review call QA scores this week!",
+      "time": "2:14pm",
+      "unread": 0,
+      "mention": true,
+      "messages": [
+        { "from": "Sunita Rao", "initials": "SR", "time": "2:05pm", "label": "Stakeholders", "text": "@You (Arvind R.), whole call centre shift" },
+        { "from": "Sunita Rao", "initials": "SR", "time": "2:05pm", "label": "Issue definition", "text": "Greeting-in-first-10s QA score is at 71% this week, below our 85% target." },
+        { "from": "Sunita Rao", "initials": "SR", "time": "2:05pm", "label": "Suggested resolution", "text": "Let's push that up. Open every call with the greeting script. I'll check back Friday." },
+        { "from": "You", "initials": "AR", "time": "2:10pm", "mine": true, "text": "On it! Will make sure I open every call with the greeting script 🙌" },
+        { "from": "Sunita Rao", "initials": "SR", "time": "2:14pm", "text": "Great attitude Arvind 🌟" }
+      ],
+      "asks": [
+        { "id": "confirm-callback", "question": "Confirm the 4:30pm callback", "context": "Priya Iyer · likely billing dispute", "options": ["Confirmed", "Reschedule"] }
+      ]
+    },
+    {
+      "id": "all-stores",
+      "kind": "channel",
+      "title": "#all-stores",
+      "subtitle": "All Stores",
+      "preview": "New Ortho Grid campaign from 1 June!",
+      "time": "10:22am",
+      "unread": 4,
+      "messages": [
+        { "from": "Manager Helper", "initials": "MH", "bot": true, "time": "10:22am", "text": "New Ortho Grid campaign live from 1 June. Ask customers about the bundled EMI offer!" }
+      ]
+    },
+    {
+      "id": "avani-coaching",
+      "kind": "channel",
+      "title": "#avani-coaching",
+      "subtitle": "Avani AI Coaching",
+      "preview": "Your warranty score dropped 12% this week",
+      "time": "9:01am",
+      "unread": 1,
+      "messages": [
+        { "from": "Avani", "initials": "AV", "bot": true, "time": "9:01am", "text": "Your warranty score dropped 12% this week. Try mentioning the warranty before the customer asks about price, not after." }
+      ]
+    },
+    {
+      "id": "manage-shipment",
+      "kind": "channel",
+      "title": "#manage-shipment",
+      "subtitle": "Manage Shipment",
+      "preview": "Ortho Grid Pro, ready for delivery",
+      "time": "10:05am",
+      "unread": 1,
+      "messages": [
+        {
+          "from": "Shipping Agent",
+          "initials": "SA",
+          "bot": true,
+          "time": "10:05am",
+          "card": {
+            "title": "Shipping notification",
+            "badge": "Ready for delivery",
+            "fields": [["Model", "Ortho Grid Pro, King"], ["Tracking", "4RS4DDF6549B4"], ["Destination", "RT Nagar, Bengaluru"]]
+          }
+        }
+      ]
+    },
+    {
+      "id": "quotation-tickets",
+      "kind": "channel",
+      "title": "#quotation-tickets",
+      "subtitle": "Quotation Tickets",
+      "preview": "Quotation approval, awaiting approval",
+      "time": "9:12am",
+      "unread": 1,
+      "messages": [
+        {
+          "from": "Ticket Desk Agent",
+          "initials": "TD",
+          "bot": true,
+          "time": "9:12am",
+          "card": {
+            "title": "Quotation approval · Mukunda R.",
+            "badge": "Awaiting approval",
+            "fields": [["Product", "Ortho Grid Pro, bundled"], ["Value", "₹58,000"], ["Raised by", "You"]],
+            "action": { "label": "View lead", "to": "?leads=mukunda" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "new-hire-onboarding",
+      "kind": "channel",
+      "title": "#new-hire-onboarding",
+      "subtitle": "New Hire Onboarding",
+      "preview": "Welcome to the team!",
+      "time": "8:30am",
+      "unread": 0,
+      "messages": [
+        {
+          "from": "Onboarding Agent",
+          "initials": "OA",
+          "bot": true,
+          "time": "8:30am",
+          "card": {
+            "title": "Welcome to the team!",
+            "fields": [["SOP training", "Starts today, 3:00pm"], ["Buddy manager", "Sunita Rao"]],
+            "action": { "label": "See today's plan", "to": "/plan/outgoing" }
+          }
+        }
+      ]
+    },
+    {
+      "id": "customer-discussions",
+      "kind": "customer",
+      "title": "customer-discussions",
+      "subtitle": "Relayed via WhatsApp Business",
+      "preview": "Relayed via WhatsApp Business",
+      "time": "2:40pm",
+      "unread": 2,
+      "messages": [
+        { "from": "Kavitha R.", "initials": "KR", "time": "11:15am", "via": "WhatsApp", "text": "When can I come see the hybrid mattress?" },
+        { "from": "Mukunda", "initials": "MK", "time": "2:40pm", "via": "WhatsApp", "text": "Got the quote for the Ortho GRID, thanks. Does it include the pillows?" }
+      ]
+    },
+    {
+      "id": "avanibot",
+      "kind": "bot",
+      "title": "AvaniBot",
+      "subtitle": "Always on",
+      "preview": "Ask me about anything happening in Pulse",
+      "time": "9:00am",
+      "unread": 0,
+      "messages": [
+        { "from": "AvaniBot", "initials": "AI", "bot": true, "time": "9:00am", "text": "Hey! I'm AvaniBot. Ask me things like \"what are my action items from Sunita\", or tap Daily Brief for a summary of your day." }
+      ],
+      "asks": [
+        { "id": "hot-leads", "question": "Call now or reassign the 2 hot leads", "context": "Untouched for 24h", "options": ["Calling now", "Reassign"] },
+        { "id": "log-outcome", "question": "Log this morning's call outcome", "context": "Suresh Nair · plan upgrade enquiry", "options": ["Converted", "Callback", "Not interested"] }
+      ]
+    },
+    {
+      "id": "sunita-rao",
+      "kind": "dm",
+      "title": "Sunita Rao",
+      "subtitle": "Manager",
+      "badge": "MGR",
+      "preview": "Great work with Mukunda, keep it up",
+      "time": "12:40pm",
+      "unread": 0,
+      "messages": [{ "from": "Sunita Rao", "initials": "SR", "time": "12:40pm", "text": "🌟 Great work with Mukunda, keep it up" }]
+    },
+    {
+      "id": "priya-krishnan",
+      "kind": "dm",
+      "title": "Priya Krishnan",
+      "subtitle": "Call centre",
+      "preview": "Can you cover my 3pm slot today?",
+      "time": "9:55am",
+      "unread": 0,
+      "messages": [{ "from": "Priya Krishnan", "initials": "PK", "time": "9:55am", "text": "Can you cover my 3pm slot today?" }]
+    },
+    {
+      "id": "raju-kumar",
+      "kind": "dm",
+      "title": "Raju Kumar",
+      "subtitle": "Advisor",
+      "preview": "Nice cross-sell on the Tranquo chair! 🔥",
+      "time": "Yesterday",
+      "unread": 0,
+      "messages": [{ "from": "Raju Kumar", "initials": "RK", "time": "Yesterday", "text": "Nice cross-sell on the Tranquo chair! 🔥" }]
+    }
+  ],
+  "agents": [
+    {
+      "id": "callcentre-agent",
+      "type": "role",
+      "title": "#callcentre-agent",
+      "name": "Call Centre Agent",
+      "metric": "Conversion",
+      "value": 29,
+      "target": 28,
+      "delta": 3,
+      "members": 3,
+      "wentWell": "Booked 6 store visits from callbacks",
+      "improve": "Greeting in the first 10 seconds on 71% of calls",
+      "itemsLabel": "Leads to follow up",
+      "items": [["Priya Iyer", "Billing dispute · call 4:30pm"], ["Suresh Nair", "Plan upgrade · log outcome"]],
+      "strengths": ["Booking visits", "Objection handling"],
+      "workOn": ["Opening greeting"]
+    },
+    {
+      "id": "cross-sell-agent",
+      "type": "task",
+      "title": "#cross-sell-agent",
+      "name": "Cross-sell & Upsell Agent",
+      "metric": "Attach rate",
+      "value": 24,
+      "target": 25,
+      "delta": 2,
+      "members": 5,
+      "wentWell": "Added a protector in 4 of 12 sales",
+      "improve": "Offer the pillow bundle before billing",
+      "itemsLabel": "Customers to upsell",
+      "items": [["Meera S.", "Bought mattress, no protector · call today"], ["Karan P.", "Queen to king upgrade · send quote"]],
+      "strengths": ["Protector pitch"],
+      "workOn": ["Pillow bundle"]
+    },
+    {
+      "id": "sop-agent",
+      "type": "task",
+      "title": "#sop-agent",
+      "name": "SOP Agent",
+      "metric": "SOP adherence",
+      "value": 81,
+      "target": 85,
+      "delta": 2,
+      "members": 5,
+      "wentWell": "Asked for feedback on every closed sale",
+      "improve": "Greet within 10 seconds",
+      "itemsLabel": "Conversations to review",
+      "items": [["Call at 11:40am", "Greeting after 35s"], ["Call at 3:05pm", "No feedback ask"]],
+      "strengths": ["Feedback ask"],
+      "workOn": ["Fast greeting"]
+    },
+    {
+      "id": "lead-conversion-agent",
+      "type": "task",
+      "title": "#lead-conversion-agent",
+      "name": "Lead Conversion Agent",
+      "metric": "Lead to sale",
+      "value": 31,
+      "target": 30,
+      "delta": 3,
+      "members": 5,
+      "wentWell": "Called every lead within 24h",
+      "improve": "Book the revisit on the first call",
+      "itemsLabel": "Leads to follow up",
+      "items": [["Meera S.", "Ortho Grid · call before 1pm"], ["Karan P.", "Recliner · send quote"]],
+      "strengths": ["Fast follow-up"],
+      "workOn": ["Booking the revisit"]
+    },
+    {
+      "id": "capture-agent",
+      "type": "task",
+      "title": "#capture-agent",
+      "name": "Conversation Capture Agent",
+      "metric": "Capture coverage",
+      "value": 78,
+      "target": 90,
+      "delta": 1,
+      "members": 5,
+      "wentWell": "Recorded every afternoon talk",
+      "improve": "Start recording at the greeting",
+      "itemsLabel": "Shifts to capture",
+      "items": [["Mon 11am to 1pm", "App not recording"], ["Tue 6pm to 8pm", "Phone on silent mode"]],
+      "strengths": ["Afternoon coverage"],
+      "workOn": ["Starting at the greeting"]
+    }
+  ],
+  "kudos": {
+    "allTime": 12,
+    "items": [
+      { "from": "Sunita Rao", "role": "Manager", "initials": "SR", "time": "Today 12:40pm", "emoji": "🏆", "text": "Great work with Mukunda, closed that warranty objection beautifully. Keep it up!" },
+      { "from": "Raju Kumar", "role": "Advisor", "initials": "RK", "time": "Yesterday", "emoji": "🔥", "text": "Nice cross-sell on the Tranquo chair! Impressed by how you read the customer." },
+      { "from": "Recognition Bot", "role": "On behalf of Sunita Rao", "initials": "RB", "time": "Yesterday", "emoji": "⭐", "text": "7-day SOP streak. Every call opened with the greeting script." }
+    ]
+  }
+}

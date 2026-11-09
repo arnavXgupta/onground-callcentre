@@ -407,4 +407,8 @@ button.rowHead:hover {
   .rowHead {
     padding: var(--sp-3);
   }
+
+  .rowMeta {
+    white-space: normal; /* phone: wrap the meta line instead of cutting it */
+  }
 }
