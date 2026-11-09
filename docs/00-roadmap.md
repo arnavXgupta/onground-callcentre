@@ -7,18 +7,18 @@ the shell, before the screens that hang off it.
 |---|---------|-------|------|--------|
 | 01 | Foundation: scaffold, tokens, routing skeleton, test harness | – | [01](01-foundation.md) | done |
 | 02 | App shell: sidebar, top bar, phone tab bar | must | [02](02-app-shell.md) | done |
-| 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | [03](03-calling.md) | built; live calls pending Twilio |
+| 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | [03](03-calling.md) | done · live calls verified both ways (2026-11-09) |
 | 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | [04](04-calls-to-make.md) | done |
 | 05 | Plan · Incoming: missed calls, value at stake, Call back | must | [05](05-incoming.md) | done |
 | 06 | Plan · Recent: call log by type/time/length, review modal | must | [06](06-recent.md) | done |
-| 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
+| 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched, not built: trial blocks `<Stream>` (D18) |
 | 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | [08](08-dashboard.md) | done |
 | 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | [09](09-leads-modal.md) | done |
 | 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | [10](10-pulse-home.md) | done |
 | 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | [11](11-pulse-channel.md) | done |
 | 12 | Calendar: month grid, event dots, Today, month switcher | must | [12](12-calendar.md) | done |
 | 13 | Practise a call | bonus | [13](13-practise.md) | done |
-| 14 | Deploy, README, demo recording | **required** | 14 | – |
+| 14 | Deploy, README, demo recording | **required** | [README](../README.md) | README done; deploy + recording pending |
 
 Phone width (bonus) is part of every feature's acceptance criteria rather than
 a feature of its own.
@@ -27,14 +27,12 @@ a feature of its own.
 modal and Pulse channels, and its task count comes from answered Pulse cards,
 so those land first.
 
-## Needed from the user (blocking 03 and 07)
+## Twilio account
 
-**Twilio** (for 03): see the checklist in [03-calling.md](03-calling.md#needs-from-the-user).
-The account must be **upgraded** (trial blocks `<Dial><Number>`, `<Dial><Client>`
-and `<Stream>`), with a **US number** (D14).
-
-**Pipecat bot** (for 07): a Pipecat Cloud org + agent, and keys for Deepgram,
-OpenAI and Cartesia (see `07-ai-calling.md` for the exact names).
+A free trial with one verified phone (D18). Calling runs on conference + queue
+routing, which the trial allows. AI calling (07) would need an upgrade: a
+Pipecat Cloud agent and keys for Deepgram, OpenAI and Cartesia (see
+`07-ai-calling.md`).
 
 ## Deadline
 
