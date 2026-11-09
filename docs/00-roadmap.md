@@ -13,7 +13,7 @@ the shell, before the screens that hang off it.
 | 06 | Plan · Recent: call log by type/time/length, review modal | must | [06](06-recent.md) | done |
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
 | 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | 08 | – |
-| 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | 09 | – |
+| 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | [09](09-leads-modal.md) | done |
 | 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | 10 | – |
 | 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | 11 | – |
 | 12 | Calendar: month grid, event dots, Today, month switcher | must | 12 | – |
@@ -22,6 +22,10 @@ the shell, before the screens that hang off it.
 
 Phone width (bonus) is part of every feature's acceptance criteria rather than
 a feature of its own.
+
+**Build order:** 09 → 10/11 → 08. The dashboard's task list opens the Leads
+modal and Pulse channels, and its task count comes from answered Pulse cards,
+so those land first.
 
 ## Needed from the user (blocking 03 and 07)
 

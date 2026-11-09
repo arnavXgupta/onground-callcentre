@@ -1,0 +1,349 @@
+/* ── pager bar under the purple header ────────────────── */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.pager > button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+}
+
+.pager > button:hover:not(:disabled) {
+  border-color: var(--ai);
+  color: var(--ai);
+}
+
+.pager > button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: var(--r-full);
+  background: var(--border-strong);
+  transition: width 0.2s, background 0.2s;
+}
+
+.dots button[aria-current='step'] {
+  width: 22px;
+  background: var(--ai);
+}
+
+/* ── one lead ─────────────────────────────────────────── */
+.page {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.status span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status[data-status='open'] { color: var(--brand); }
+.status[data-status='ageing'] { color: var(--warn); }
+.status[data-status='cold'] { color: var(--text-subtle); }
+
+.leadCard {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.leadMain {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.leadMain strong {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+}
+
+.leadMain span {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+}
+
+.quote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid #f1d9a8;
+  border-radius: var(--r-md);
+  background: var(--warn-tint);
+  color: #7a4a06;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.quote > span {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+/* on/off switch */
+.switch {
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  border-radius: var(--r-full);
+  background: var(--border-strong);
+  transition: background 0.15s;
+}
+
+.switch span {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  transition: transform 0.15s;
+}
+
+.switch[aria-checked='true'] {
+  background: var(--brand);
+}
+
+.switch[aria-checked='true'] span {
+  transform: translateX(16px);
+}
+
+.slaNote {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--danger-tint);
+  color: var(--danger);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.metricLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.icp {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.icp strong {
+  color: var(--brand-strong);
+}
+
+.track {
+  height: 6px;
+  border-radius: var(--r-full);
+  background: var(--border);
+  overflow: hidden;
+}
+
+.track span {
+  display: block;
+  width: var(--pct);
+  height: 100%;
+  border-radius: inherit;
+}
+
+.track span[data-tone='brand'] { background: var(--brand); }
+.track span[data-tone='warn'] { background: #e0a52f; }
+.track span[data-tone='danger'] { background: var(--danger); }
+
+.intent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--brand-tint);
+  color: var(--brand-strong);
+}
+
+.intent strong {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+/* ── folds (<details>) ────────────────────────────────── */
+.fold {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.fold summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--text-muted);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+
+.fold summary::-webkit-details-marker {
+  display: none;
+}
+
+.fold summary::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+
+.fold[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.fold > :not(summary) {
+  margin: 0;
+  padding: 0 var(--sp-3) var(--sp-3);
+}
+
+.breakdown {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.barLabel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  font-size: var(--fs-sm);
+}
+
+.timeline {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-3);
+  border-left: 2px solid var(--ai-tint);
+  margin-left: var(--sp-3) !important;
+  padding-left: var(--sp-3) !important;
+}
+
+.when {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+}
+
+.when span {
+  margin-left: var(--sp-1);
+  color: var(--ai);
+  font-weight: 600;
+}
+
+.timeline p,
+.signals p {
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+}
+
+.signals {
+  list-style: none;
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.signals li {
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  background: var(--surface-muted);
+}
+
+.signalName {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  margin-bottom: 2px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.signalName svg {
+  color: var(--warn);
+}
+
+.notes {
+  display: grid;
+  gap: var(--sp-1);
+  padding-left: calc(var(--sp-3) + 16px) !important;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-sm);
+}
+
+/* ── footer ───────────────────────────────────────────── */
+.footer {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.missed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  color: var(--danger);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-align: center;
+}
+
+.redDot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--danger);
+}
