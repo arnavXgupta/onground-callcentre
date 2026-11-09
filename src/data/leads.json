@@ -1,0 +1,188 @@
+[
+  {
+    "id": "mukunda",
+    "name": "Mukunda",
+    "initials": "MK",
+    "phone": "+91 98765 43210",
+    "status": "open",
+    "intent": "interested",
+    "product": "Ortho GRID Mattress",
+    "productShort": "Ortho GRID",
+    "price": 8490,
+    "crossSell": { "name": "Mattress Protector", "price": 1999 },
+    "emiNote": "Asked about EMI. Quote the 12-month zero-interest plan.",
+    "score": 90,
+    "icp": 87,
+    "intentScore": 91,
+    "icpBreakdown": [
+      { "label": "Budget fit", "pct": 87 },
+      { "label": "Need match", "pct": 72 },
+      { "label": "Decision stage", "pct": 60 }
+    ],
+    "sla": { "label": "2h left", "tone": "brand" },
+    "slaNote": null,
+    "quoteRequested": true,
+    "notes": [
+      "Asked about EMI on the Ortho GRID. Lead with the 12-month zero-interest plan.",
+      "Price-sensitive and compared us with a competitor. Mention the 100-night trial to reduce risk.",
+      "Prefers evening calls, after 6pm."
+    ],
+    "signals": [
+      { "category": "Financing", "text": "Asked specifically about EMI options on the Ortho GRID. Budget is a live concern, not a blocker." },
+      { "category": "Quotation demanded", "text": "Compared pricing with a competitor before reaching out. Price-anchored, expects a competitive number." },
+      { "category": "Warranty", "text": "Hasn't raised it yet. Worth proactively mentioning the 100-night trial to reduce perceived risk." }
+    ],
+    "journey": [
+      { "date": "18 May", "channel": "Meta ad", "text": "Clicked the \"0% EMI on Ortho GRID\" retargeting ad, first touch" },
+      { "date": "20 May", "channel": "AI agent", "text": "Opted in on WhatsApp and shared preferred size" },
+      { "date": "22 May", "channel": "Voice AI", "text": "4m 12s qualifying call, asked if pillows come bundled" },
+      { "date": "24 May", "channel": "WhatsApp", "text": "Asked for a quote with pillows bundled in" }
+    ]
+  },
+  {
+    "id": "kavitha-r",
+    "name": "Kavitha R.",
+    "initials": "KR",
+    "phone": "+91 97654 32109",
+    "status": "ageing",
+    "intent": "interested",
+    "product": "SmartGRID Hybrid Mattress",
+    "productShort": "SmartGRID Hybrid",
+    "price": 24990,
+    "crossSell": { "name": "Cooling Pillow Set", "price": 2499 },
+    "emiNote": "Budget is borderline. A payment plan could tip this.",
+    "score": 55,
+    "icp": 61,
+    "intentScore": 63,
+    "icpBreakdown": [
+      { "label": "Budget fit", "pct": 61 },
+      { "label": "Need match", "pct": 42 },
+      { "label": "Decision stage", "pct": 35 }
+    ],
+    "sla": { "label": "+3d ageing", "tone": "warn" },
+    "slaNote": "SLA missed. 5 days of grace left to close.",
+    "quoteRequested": false,
+    "notes": [
+      "SLA already missed. Open with an apology for the delay, not a sales pitch.",
+      "Low need match (42%). Re-confirm the SmartGRID Hybrid is still the right fit before pushing.",
+      "Hasn't answered the last 2 WhatsApp messages. Try a call instead."
+    ],
+    "signals": [
+      { "category": "Product fit", "text": "Unsure the SmartGRID Hybrid fits her need. Need match is low (42%), so re-confirm fit first." },
+      { "category": "In-store experience", "text": "Quiet on WhatsApp. May want to see and feel the product before deciding. Invite her back in." },
+      { "category": "Financing", "text": "Budget fit is borderline (61%). A payment plan or bundle discount could tip this." }
+    ],
+    "journey": [
+      { "date": "12 May", "channel": "Google ad", "text": "Searched \"cooling gel mattress bangalore\" and clicked our search ad" },
+      { "date": "15 May", "channel": "AI agent", "text": "WhatsApp auto-reply confirmed interest in the cooling gel layer" },
+      { "date": "19 May", "channel": "WhatsApp", "text": "Asked to hold the price for 2 days, quiet since" }
+    ]
+  },
+  {
+    "id": "faizan-a",
+    "name": "Faizan A.",
+    "initials": "FA",
+    "phone": "+91 96543 21098",
+    "status": "open",
+    "intent": "interested",
+    "product": "Tranquo Massager Chair",
+    "productShort": "Tranquo Massager Chair",
+    "price": 24990,
+    "crossSell": { "name": "Ergo Seat Cushion", "price": 1299 },
+    "emiNote": "Confirmed he wants the 6-month no-cost EMI plan.",
+    "score": 88,
+    "icp": 82,
+    "intentScore": 85,
+    "icpBreakdown": [
+      { "label": "Budget fit", "pct": 82 },
+      { "label": "Need match", "pct": 78 },
+      { "label": "Decision stage", "pct": 70 }
+    ],
+    "sla": { "label": "Confirmed date", "tone": "brand" },
+    "slaNote": null,
+    "quoteRequested": true,
+    "notes": [
+      "Confirmed Monday as the day he'll decide. Call back then, don't let it go quiet.",
+      "Wants the 6-month no-cost EMI plan. Have the paperwork ready.",
+      "Already compared with a competitor and preferred our warranty terms."
+    ],
+    "signals": [
+      { "category": "Financing", "text": "Explicitly asked for the no-cost EMI plan. Ready to commit once financing is confirmed." },
+      { "category": "Warranty", "text": "Compared warranty terms with a competitor and preferred ours. Reinforce this on the call." }
+    ],
+    "journey": [
+      { "date": "2 Jun", "channel": "Store visit", "text": "Tried the chair in-store, asked detailed questions on massage programs" },
+      { "date": "4 Jun", "channel": "Call", "text": "6m 40s call, confirmed budget and asked about EMI" }
+    ]
+  },
+  {
+    "id": "ritu-s",
+    "name": "Ritu S.",
+    "initials": "RS",
+    "phone": "+91 98450 00001",
+    "status": "open",
+    "intent": "interested",
+    "product": "Smart Luxe Mattress",
+    "productShort": "Smart Luxe Mattress",
+    "price": 13390,
+    "crossSell": { "name": "Mattress Protector", "price": 1999 },
+    "emiNote": "Not discussed yet. Bring it up early, she asked about the total cost.",
+    "score": 96,
+    "icp": 94,
+    "intentScore": 96,
+    "icpBreakdown": [
+      { "label": "Budget fit", "pct": 90 },
+      { "label": "Need match", "pct": 88 },
+      { "label": "Decision stage", "pct": 85 }
+    ],
+    "sla": { "label": "Hot lead", "tone": "brand" },
+    "slaNote": null,
+    "quoteRequested": true,
+    "notes": [
+      "Asked \"how soon can this be delivered\". Very high buying signal, close fast.",
+      "Visited the RT Nagar store last week.",
+      "In CRM from a prior visit, high expected value."
+    ],
+    "signals": [
+      { "category": "Quotation demanded", "text": "Asked for a delivery timeline straight away. Ready to commit once the price is confirmed." }
+    ],
+    "journey": [
+      { "date": "28 May", "channel": "Store visit", "text": "Visited RT Nagar store, tried the Smart Luxe in person" },
+      { "date": "30 May", "channel": "Missed call", "text": "Called back after the store visit, missed, needs a callback" }
+    ]
+  },
+  {
+    "id": "divya-p",
+    "name": "Divya P.",
+    "initials": "DP",
+    "phone": "+91 90000 44556",
+    "status": "cold",
+    "intent": "browsing",
+    "product": "Aura Executive Chair",
+    "productShort": "Aura Executive Chair",
+    "price": 18490,
+    "crossSell": { "name": "Ergo Seat Cushion", "price": 1299 },
+    "emiNote": "Not discussed. Low priority to raise financing yet.",
+    "score": 38,
+    "icp": 34,
+    "intentScore": 38,
+    "icpBreakdown": [
+      { "label": "Budget fit", "pct": 40 },
+      { "label": "Need match", "pct": 35 },
+      { "label": "Decision stage", "pct": 20 }
+    ],
+    "sla": { "label": "Low signal", "tone": "neutral" },
+    "slaNote": null,
+    "quoteRequested": false,
+    "notes": [
+      "Gave one-word replies on the last call. Low engagement.",
+      "Said she's \"just looking around\". Treat as low priority this week."
+    ],
+    "signals": [
+      { "category": "In-store experience", "text": "Vague, non-committal answers. May need to see the product before engaging further." }
+    ],
+    "journey": [
+      { "date": "1 Jun", "channel": "Website", "text": "Browsed the chair category, no form filled" }
+    ]
+  }
+]

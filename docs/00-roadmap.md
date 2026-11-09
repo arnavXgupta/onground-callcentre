@@ -7,8 +7,8 @@ the shell, before the screens that hang off it.
 |---|---------|-------|------|--------|
 | 01 | Foundation: scaffold, tokens, routing skeleton, test harness | – | [01](01-foundation.md) | done |
 | 02 | App shell: sidebar, top bar, phone tab bar | must | [02](02-app-shell.md) | done |
-| 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | 03 | – |
-| 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | 04 | – |
+| 03 | Calling: browser softphone ↔ real phone, inbound ring, in-call, dial pad, wrap-up | **required** | [03](03-calling.md) | built; live calls pending Twilio |
+| 04 | Plan · Calls to make: ranked leads, expandable rows, paging, Place call | must | [04](04-calls-to-make.md) | reviewed |
 | 05 | Plan · Incoming: missed calls, value at stake, Call back | must | 05 | – |
 | 06 | Plan · Recent: call log by type/time/length, review modal | must | 06 | – |
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
@@ -25,12 +25,9 @@ a feature of its own.
 
 ## Needed from the user (blocking 03 and 07)
 
-**Twilio** (for 03):
-- Account SID, an API Key SID + Secret
-- A Twilio phone number with voice
-- A TwiML App (its Voice URL gets pointed at our `/api/voice`)
-- Verified caller IDs for the phones we'll call in the demo (trial accounts only dial verified numbers)
-- Geo permissions: India enabled for voice
+**Twilio** (for 03): see the checklist in [03-calling.md](03-calling.md#needs-from-the-user).
+The account must be **upgraded** (trial blocks `<Dial><Number>`, `<Dial><Client>`
+and `<Stream>`), with a **US number** (D14).
 
 **Pipecat bot** (for 07): a Pipecat Cloud org + agent, and keys for Deepgram,
 OpenAI and Cartesia (see `07-ai-calling.md` for the exact names).

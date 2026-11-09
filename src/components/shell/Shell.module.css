@@ -180,6 +180,58 @@
   background: rgb(255 255 255 / 0.12);
 }
 
+/* inbound availability pill */
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  height: 32px;
+  padding: 0 var(--sp-3);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: var(--r-full);
+  color: var(--shell-text-strong);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.availability:hover:not(:disabled) {
+  background: rgb(255 255 255 / 0.08);
+}
+
+.availability[data-status='online'] {
+  border-color: var(--brand);
+  background: rgb(29 158 117 / 0.18);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-subtle);
+}
+
+.availability[data-status='online'] .statusDot {
+  background: var(--shell-accent);
+}
+
+.availability[data-status='connecting'] .statusDot {
+  background: var(--gold);
+}
+
+.availability[data-status='mic_blocked'] .statusDot,
+.availability[data-status='error'] .statusDot {
+  background: var(--danger);
+}
+
+.iconBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.popover.dialPop {
+  width: 300px;
+}
+
 .dot {
   position: absolute;
   top: 7px;
@@ -413,6 +465,14 @@
 
   .title .logo {
     display: inline-grid;
+  }
+
+  .scoreChip {
+    display: none; /* the dashboard shows the score; the top bar needs the room for calling */
+  }
+
+  .actions {
+    gap: var(--sp-1);
   }
 
   .popover {

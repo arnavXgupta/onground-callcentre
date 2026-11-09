@@ -41,18 +41,25 @@ Modals (leads, call review, wrap-up, dial pad) are overlays on the current route
 stateDiagram-v2
   [*] --> idle
   idle --> connecting: Place call / Call back / Dial
-  idle --> ringing_in: inbound call arrives
-  ringing_in --> in_call: Accept
-  ringing_in --> idle: Decline / caller hangs up (logged as missed)
-  connecting --> in_call: callee answers
-  connecting --> ended: busy / no answer / failed
+  connecting --> ringing: callee's phone rings (answerOnBridge)
+  ringing --> in_call: callee answers
+  connecting --> ended: failed / not connected
+  ringing --> ended: busy / no answer ("Not connected")
+  idle --> incoming: inbound call arrives
+  incoming --> in_call: Accept
+  incoming --> idle: Decline / caller hangs up (logged as missed)
   in_call --> ended: either side hangs up
   ended --> wrap_up
   wrap_up --> idle: Save (logged to Recent) / Skip
 ```
 
-In `in_call`: mute, keypad (DTMF), live timer, end. One call at a time; starting
-a second call while one is live is blocked with a message.
+Before any of this, the agent clicks **Go online** (mic permission + device
+registration from a user gesture). Offline agents can still place calls, since
+registration only matters for inbound.
+
+In `in_call`: mute, keypad (DTMF), live timer, end. One call at a time: a second
+outbound is blocked with a message; an inbound call while busy is rejected and
+logged as missed.
 
 Call modes, same UI and state machine:
 
@@ -72,16 +79,18 @@ sequenceDiagram
   participant P as Customer phone
   B->>V: GET /api/token
   V-->>B: Access token (VoiceGrant, identity=agent)
-  B->>T: device.connect({ To: +91… })
-  T->>V: POST /api/voice (TwiML App webhook)
-  V-->>T: <Dial callerId=OUR_NUMBER><Number>+91…</Number></Dial>
-  T->>P: PSTN call rings
-  P-->>B: audio bridged both ways
+  B->>T: device.connect({ params: { leadId } or { To } })
+  T->>V: POST /api/voice (signed, From=client:agent)
+  V->>V: verify signature, route: leadId → LEAD_CALL_NUMBER, To → only if allowlisted
+  V-->>T: <Dial callerId=OUR_US_NUMBER answerOnBridge><Number>…</Number></Dial>
+  T->>P: PSTN call rings (browser gets "ringing")
+  P-->>B: answered: audio bridged both ways ("accept")
 ```
 
-Inbound is the same webhook: when the caller isn't our browser client,
-`/api/voice` answers `<Dial><Client>agent</Client></Dial>` and the browser
-gets an `incoming` event.
+**Inbound:** the same webhook. When `From` is a phone (not `client:…`),
+`/api/voice` answers `<Dial action=/api/voice?dialed=1 timeout=20><Client>agent</Client></Dial>`
+and every online browser gets an `incoming` event. The action callback plays
+"we'll call you back" only if nobody answered.
 
 ## 4. System flow: AI call (AI → real phone)
 

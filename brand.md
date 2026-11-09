@@ -48,6 +48,7 @@ radii and gradients in exactly two places.
 --ai-tint:       #f2edff;
 --warn:          #b7791f;   /* tasks, needs-input, SLA */
 --warn-tint:     #fdf4e3;
+--warn-strong:   #8a4b0c;   /* incoming-call dock (white text) */
 --danger:        #d64545;   /* missed calls, end call, overdue */
 --danger-tint:   #fdeeee;
 --info:          #2563eb;   /* CSAT chart, incoming */

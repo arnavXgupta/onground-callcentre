@@ -81,3 +81,23 @@ outbound AI call is a single Twilio `calls.create` with inline TwiML that
 streams to `wss://api.pipecat.daily.co/ws/twilio`. Pipecat Cloud hosts the
 websocket and the bot, so everything we host stays plain HTTP on Vercel. This
 settles the "bot runs on its own host" open point in D4.
+
+### D14 · Paid Twilio account with a US number (supersedes "trial is enough" in D2)
+**Why:** Twilio trial accounts replace `<Dial><Number>`, `<Dial><Client>` and
+`<Stream>` with a "not available on trial accounts" message. That kills browser →
+phone, inbound-to-browser and the Pipecat media stream. Twilio places calls to
+India only from international numbers, so we use a US number. Found by the
+independent plan review, then confirmed on Twilio's trial docs.
+
+### D15 · Server code layout: `api/` handlers, shared logic in `server/`, dev via a Vite plugin
+**Why:** Vercel now recommends keeping shared code outside `api/`. Handlers use
+the Web `Request → Response` signature, so tests call them directly with no
+mocks. In dev, a ~30-line Vite plugin serves the same handlers, so
+`npm run dev` + ngrok is the whole local setup. **Passed on:** `vercel dev`,
+which needs a CLI login and project link before anything runs locally.
+
+### D16 · "Go online" before receiving calls
+**Why:** Twilio recommends registering the device from a user gesture (browser
+audio/autoplay rules), and it puts the mic prompt up front rather than in the
+middle of answering a call. It also stops every visitor on the public link from
+silently registering as the agent and ringing on inbound calls.

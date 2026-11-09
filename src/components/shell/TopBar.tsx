@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router'
 import {
   IconBell,
   IconChartBar,
+  IconDialpad,
   IconFlame,
   IconPhoneCall,
   IconStarFilled,
@@ -11,6 +12,8 @@ import {
   IconBarbell,
   type Icon,
 } from '@tabler/icons-react'
+import { useCall, type DeviceStatus } from '../../calling/CallProvider'
+import DialPad from '../../calling/DialPad'
 import { agent, notifications } from '../../data'
 import type { NotificationKind } from '../../data/types'
 import s from './Shell.module.css'
@@ -33,11 +36,41 @@ const KIND_ICON: Record<NotificationKind, Icon> = {
 
 const NOTIF_POP = 'notifications-popover'
 const USER_POP = 'user-popover'
+const DIAL_POP = 'dialpad-popover'
+
+const STATUS_LABEL: Record<DeviceStatus, string> = {
+  offline: 'Go online',
+  connecting: 'Connecting…',
+  online: 'Online',
+  mic_blocked: 'Mic blocked',
+  error: 'Offline · retry',
+}
+
+/** Inbound availability. Clicking is the user gesture that grants the mic and registers the device (D16). */
+function Availability() {
+  const { status, statusDetail, goOnline, goOffline } = useCall()
+  const title =
+    status === 'online' ? 'Ready for inbound calls. Click to go offline.' : (statusDetail ?? 'Go online to receive inbound calls')
+  return (
+    <button
+      type="button"
+      className={s.availability}
+      data-status={status}
+      disabled={status === 'connecting'}
+      onClick={() => (status === 'online' ? goOffline() : goOnline())}
+      title={title}
+    >
+      <span className={s.statusDot} />
+      {STATUS_LABEL[status]}
+    </button>
+  )
+}
 
 export default function TopBar() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [seen, setSeen] = useState(false)
+  const { call, place } = useCall()
   const section = SECTION[pathname.split('/')[1]] ?? ''
 
   function go(to: string) {
@@ -53,7 +86,20 @@ export default function TopBar() {
       </div>
 
       <div className={s.actions}>
+        <Availability />
+
         <button
+          type="button"
+          className={s.iconBtn}
+          popoverTarget={DIAL_POP}
+          disabled={call.phase !== 'idle'}
+          aria-label="Dial pad"
+        >
+          <IconDialpad size={18} stroke={1.75} />
+        </button>
+
+        <button
+          type="button"
           className={s.iconBtn}
           popoverTarget={NOTIF_POP}
           onClick={() => setSeen(true)}
@@ -105,6 +151,15 @@ export default function TopBar() {
             )
           })}
         </ul>
+      </div>
+
+      <div id={DIAL_POP} popover="auto" className={`${s.popover} ${s.dialPop}`}>
+        <DialPad
+          onCall={(number) => {
+            document.getElementById(DIAL_POP)?.hidePopover?.()
+            place({ name: number, number })
+          }}
+        />
       </div>
 
       <div id={USER_POP} popover="auto" className={s.popover}>
