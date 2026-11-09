@@ -13,6 +13,7 @@
 }
 
 .content {
+  position: relative; /* contain absolutely positioned children (e.g. .sr-only) in the scroller */
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -21,10 +22,13 @@
 
 /* ── sidebar nav ──────────────────────────────────────── */
 .nav {
+  position: relative;
+  z-index: 2;
   background: var(--shell);
   color: var(--shell-text);
-  padding: var(--sp-3);
+  padding: var(--sp-4) var(--sp-3);
   overflow-y: auto;
+  border-right: 1px solid var(--border);
 }
 
 .wordmark {
@@ -33,7 +37,7 @@
   gap: var(--sp-2);
   height: 40px;
   padding: 0 var(--sp-2);
-  margin-bottom: var(--sp-4);
+  margin-bottom: var(--sp-6);
   color: var(--shell-text-strong);
   font-size: var(--fs-lg);
   font-weight: 700;
@@ -42,11 +46,12 @@
 .logo {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--r-sm);
-  background: var(--brand);
+  background: var(--brand-strong);
   color: #fff;
+  box-shadow: var(--shadow-raise);
   font-size: var(--fs-xs);
   font-weight: 700;
 }
@@ -61,7 +66,7 @@
 .navList {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--sp-1);
 }
 
 .navItem {
@@ -74,17 +79,17 @@
   color: var(--shell-text);
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
+  transition: box-shadow 0.15s, color 0.15s;
 }
 
 .navItem:hover {
-  background: rgb(255 255 255 / 0.04);
+  background: var(--surface-muted);
   color: var(--shell-text-strong);
 }
 
 .navItem.active {
-  background: var(--shell-raised);
-  color: var(--shell-text-strong);
+  background: var(--brand-tint);
+  color: var(--brand-strong);
 }
 
 .navIcon {
@@ -93,7 +98,6 @@
   width: 28px;
   height: 28px;
   border-radius: var(--r-sm);
-  background: rgb(255 255 255 / 0.06);
 }
 
 .navItem.active .navIcon {
@@ -120,17 +124,16 @@
   font-size: var(--fs-sm);
   font-weight: 500;
   text-decoration: none;
-  opacity: 0.8;
+  transition: box-shadow 0.15s, color 0.15s;
 }
 
 .subItem:hover {
-  opacity: 1;
-  background: rgb(255 255 255 / 0.04);
+  background: var(--surface-muted);
+  color: var(--shell-text-strong);
 }
 
 .subItem.active {
-  opacity: 1;
-  background: var(--shell-raised);
+  background: var(--brand-tint);
   color: var(--shell-accent);
   font-weight: 600;
 }
@@ -145,6 +148,7 @@
   padding: 0 var(--sp-6);
   background: var(--shell);
   color: var(--shell-text-strong);
+  border-bottom: 1px solid var(--border);
 }
 
 .title .logo {
@@ -155,14 +159,15 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
-  font-size: var(--fs-lg);
-  font-weight: 600;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-xl);
+  font-weight: 700;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
 }
 
 .iconBtn {
@@ -171,13 +176,21 @@
   place-items: center;
   width: 36px;
   height: 36px;
+  border: 1px solid var(--edge);
   border-radius: var(--r-full);
-  background: rgb(255 255 255 / 0.06);
-  color: var(--shell-text-strong);
+  background: var(--surface);
+  color: var(--shell-text);
+  box-shadow: var(--shadow-raise);
+  transition: box-shadow 0.15s, color 0.15s;
 }
 
 .iconBtn:hover {
-  background: rgb(255 255 255 / 0.12);
+  color: var(--shell-text-strong);
+}
+
+.iconBtn:active,
+.iconBtn[aria-expanded='true'] {
+  box-shadow: var(--shadow-press);
 }
 
 /* inbound availability pill */
@@ -186,22 +199,27 @@
   white-space: nowrap;
   align-items: center;
   gap: var(--sp-2);
-  height: 32px;
-  padding: 0 var(--sp-3);
-  border: 1px solid rgb(255 255 255 / 0.18);
+  height: 36px;
+  padding: 0 var(--sp-4);
+  border: 1px solid var(--edge);
   border-radius: var(--r-full);
+  background: var(--surface);
   color: var(--shell-text-strong);
   font-size: var(--fs-sm);
   font-weight: 600;
+  box-shadow: var(--shadow-raise);
+  transition: box-shadow 0.15s;
 }
 
-.availability:hover:not(:disabled) {
-  background: rgb(255 255 255 / 0.08);
+.availability:active:not(:disabled) {
+  box-shadow: var(--shadow-press);
 }
 
 .availability[data-status='online'] {
-  border-color: var(--brand);
-  background: rgb(29 158 117 / 0.18);
+  border-color: rgb(24 160 88 / 0.35);
+  background: var(--ok-tint);
+  box-shadow: none;
+  color: var(--ok-strong);
 }
 
 .statusDot {
@@ -212,7 +230,8 @@
 }
 
 .availability[data-status='online'] .statusDot {
-  background: var(--shell-accent);
+  background: var(--ok);
+  box-shadow: 0 0 0 3px var(--ok-tint);
 }
 
 .availability[data-status='connecting'] .statusDot {
@@ -241,7 +260,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--danger);
-  box-shadow: 0 0 0 2px var(--shell);
+  box-shadow: 0 0 0 2px var(--surface);
 }
 
 .scoreChip {
@@ -251,7 +270,7 @@
   height: 36px;
   padding: 0 var(--sp-3) 0 4px;
   border-radius: var(--r-full);
-  background: rgb(255 255 255 / 0.06);
+  box-shadow: var(--shadow-press);
   font-size: var(--fs-sm);
   font-weight: 600;
   cursor: default;
@@ -268,7 +287,7 @@
   /* progress ring: inner disc over a conic track (score/100) */
   background:
     radial-gradient(closest-side, var(--shell) 78%, transparent 80%),
-    conic-gradient(var(--brand) calc(var(--score, 76) * 1%), rgb(255 255 255 / 0.15) 0);
+    conic-gradient(var(--brand) calc(var(--score, 76) * 1%), var(--border-strong) 0);
 }
 
 .rank {
@@ -286,7 +305,7 @@
   color: var(--brand-strong);
   font-size: var(--fs-sm);
   font-weight: 700;
-  box-shadow: 0 0 0 2px var(--brand);
+  box-shadow: 0 0 0 3px var(--surface), var(--shadow-raise);
 }
 
 /* ── popovers (native [popover]) ──────────────────────── */
@@ -300,7 +319,7 @@
   margin: 0;
   padding: 0;
   overflow-y: auto;
-  border: 1px solid var(--border);
+  border: 1px solid var(--edge);
   border-radius: var(--r-lg);
   background: var(--surface);
   color: var(--text);
@@ -421,8 +440,9 @@
     inset: auto 0 0 0;
     height: var(--tabbar-h);
     padding: 0 0 env(safe-area-inset-bottom);
-    border-top: 1px solid rgb(255 255 255 / 0.08);
     overflow: visible;
+    border-top: 1px solid var(--border);
+    border-right: 0;
   }
 
   .wordmark,
@@ -449,11 +469,17 @@
     height: 100%;
     border-radius: 0;
     background: none;
+    box-shadow: none;
     font-size: var(--fs-xs);
   }
 
   .navItem.active {
     color: var(--shell-accent);
+  }
+
+  .navItem.active .navIcon {
+    background: var(--brand-tint);
+    color: var(--brand-strong);
   }
 
   .topbar {

@@ -118,3 +118,38 @@ and phone join one conference" (the server rings the phone into it). Inbound bec
 call queue the agent picks up from, which is how call centres work anyway and feeds "Who's
 waiting". It runs unchanged on a paid account. **Cost:** callees/callers must be verified
 numbers, calls cap at 10 minutes, and a ringing callee is detected by polling the conference.
+
+### D19 · Soft UI (neumorphism) restyle, no gradients
+**Why:** The user asked for a cleaner, more premium look in solid colours with
+neumorphism. Canvas, cards and shell now share one cool grey (`#e6eaf0`); depth
+comes from paired light/dark shadows (`--shadow-card`, `--shadow-raise`,
+`--shadow-press`), not borders or gradients. The dark green shell went light; the
+palette moved to slate + deep teal (brand), muted indigo (AI), amber, brick red.
+The dashboard hero and in-call card are one solid ink slab instead of gradients.
+**Rule that keeps it usable:** raised = clickable (buttons, task rows, chips,
+calendar days on hover), inset = information or input (stats, queue rows, text
+fields, the active nav item, a selected chip). Text and accents keep AA contrast
+on the grey; neumorphism's usual low-contrast failure is avoided by never relying
+on shadow alone to show state. **Kept:** the score ring is a hard-stop conic fill,
+a solid two-colour ring, not a visible gradient.
+
+### D20 · Lighter "hybrid" soft UI and a one-accent palette (refines D19)
+**Why:** The user found D19's neumorphism too heavy and asked for a palette and UI
+based on current dashboard practice. What the research said: full neumorphism
+fails on data-dense dashboards because shadow-on-same-colour edges fall well
+under WCAG's 3:1 non-text contrast, so use a hybrid (soft shadows **plus**
+hairline borders, state shown by colour, not shadow alone). The best 2026 SaaS
+dashboards use **one accent** for actions and keep green/amber/red for status
+only ("red means broken, not look here"). Size, not colour blocks, sets KPI
+hierarchy. Trends are lines; per-day counts are bars.
+**What changed:** surfaces `#f8f9fb` sit a shade above the `#eef1f5` canvas with
+a 1px border and short shadows. Accent is royal indigo `#3b5bdb` (buttons,
+links, nav, selection). `--brand` stays the accent; a new `--ok` green carries
+live/positive/pass/on-target. Money and score numbers are ink, not brand colour.
+The dark hero and the purple AvaniBot, chat and modal headers became neutral
+surfaces with coloured icon tiles. CSAT trend is a line chart. Calendar event
+dots use the accent instead of red. The call dock stays dark, since it floats
+over everything and must stand out.
+Sources: setproduct.com/blog/neumorphism-design-guide,
+925studios.co/blog/saas-dashboard-design-examples-2026, dev.to/thekitbase
+"SaaS dashboard design trends in 2026", adminlte.io/blog/best-admin-dashboard-color-schemes.

@@ -10,16 +10,20 @@
 .pager > button {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--border);
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--edge);
   border-radius: 50%;
+  box-shadow: var(--shadow-raise);
   color: var(--text);
 }
 
 .pager > button:hover:not(:disabled) {
-  border-color: var(--ai);
   color: var(--ai);
+}
+
+.pager > button:active:not(:disabled) {
+  box-shadow: var(--shadow-press);
 }
 
 .pager > button:disabled {
@@ -37,13 +41,14 @@
   height: 8px;
   padding: 0;
   border-radius: var(--r-full);
-  background: var(--border-strong);
+  box-shadow: inset 1px 1px 2px var(--neu-dark), inset -1px -1px 2px var(--neu-light);
   transition: width 0.2s, background 0.2s;
 }
 
 .dots button[aria-current='step'] {
   width: 22px;
   background: var(--ai);
+  box-shadow: none;
 }
 
 /* ── one lead ─────────────────────────────────────────── */
@@ -69,7 +74,7 @@
   background: currentColor;
 }
 
-.status[data-status='open'] { color: var(--brand); }
+.status[data-status='open'] { color: var(--ok); }
 .status[data-status='ageing'] { color: var(--warn); }
 .status[data-status='cold'] { color: var(--text-subtle); }
 
@@ -102,10 +107,10 @@
   justify-content: space-between;
   gap: var(--sp-3);
   padding: var(--sp-2) var(--sp-3);
-  border: 1px solid #f1d9a8;
+  border: 1px solid rgb(162 101 15 / 0.22);
   border-radius: var(--r-md);
   background: var(--warn-tint);
-  color: #7a4a06;
+  color: var(--warn-strong);
   font-size: var(--fs-sm);
   font-weight: 600;
 }
@@ -120,31 +125,32 @@
 .switch {
   position: relative;
   flex: none;
-  width: 36px;
-  height: 20px;
+  width: 40px;
+  height: 22px;
   border-radius: var(--r-full);
-  background: var(--border-strong);
+  box-shadow: var(--shadow-press);
   transition: background 0.15s;
 }
 
 .switch span {
   position: absolute;
-  top: 2px;
-  left: 2px;
+  top: 3px;
+  left: 3px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+  background: var(--surface);
+  box-shadow: 1px 1px 3px var(--neu-dark), -1px -1px 2px var(--neu-light);
   transition: transform 0.15s;
 }
 
 .switch[aria-checked='true'] {
   background: var(--brand);
+  box-shadow: inset 1px 1px 3px rgb(0 0 0 / 0.25);
 }
 
 .switch[aria-checked='true'] span {
-  transform: translateX(16px);
+  transform: translateX(18px);
 }
 
 .slaNote {
@@ -172,13 +178,14 @@
 }
 
 .icp strong {
-  color: var(--brand-strong);
+  color: var(--text);
 }
 
 .track {
-  height: 6px;
+  height: 8px;
+  padding: 2px;
   border-radius: var(--r-full);
-  background: var(--border);
+  box-shadow: var(--shadow-press);
   overflow: hidden;
 }
 
@@ -189,8 +196,8 @@
   border-radius: inherit;
 }
 
-.track span[data-tone='brand'] { background: var(--brand); }
-.track span[data-tone='warn'] { background: #e0a52f; }
+.track span[data-tone='brand'] { background: var(--ok); }
+.track span[data-tone='warn'] { background: var(--warn); }
 .track span[data-tone='danger'] { background: var(--danger); }
 
 .intent {
@@ -199,8 +206,8 @@
   justify-content: space-between;
   padding: var(--sp-2) var(--sp-3);
   border-radius: var(--r-md);
-  background: var(--brand-tint);
-  color: var(--brand-strong);
+  background: var(--ok-tint);
+  color: var(--ok-strong);
 }
 
 .intent strong {
@@ -210,8 +217,9 @@
 
 /* ── folds (<details>) ────────────────────────────────── */
 .fold {
-  border: 1px solid var(--border);
+  border: 1px solid var(--edge);
   border-radius: var(--r-md);
+  box-shadow: var(--shadow-raise);
 }
 
 .fold summary {
@@ -299,7 +307,7 @@
 .signals li {
   padding: var(--sp-2) var(--sp-3);
   border-radius: var(--r-md);
-  background: var(--surface-muted);
+  box-shadow: var(--shadow-press);
 }
 
 .signalName {

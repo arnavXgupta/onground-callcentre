@@ -1,62 +1,51 @@
 # Brand & UI system
 
-Same identity as the On-Ground mock (deep-green shell, emerald accent, purple
-for AI/Pulse, amber for tasks), with the noise taken out. The mock uses 15 font
-sizes, 8 corner radii and a gradient on nearly every block. We use 6 sizes, 4
-radii and gradients in exactly two places.
+Hybrid soft UI with one accent (D19, D20). The mock uses 15 font sizes, 8 corner
+radii and a gradient on nearly every block. We use 6 sizes, 4 radii and no gradients.
 
 ## Principles
 
-1. **Calm by default, loud on purpose.** Neutral white cards on a soft grey
-   canvas. Colour is reserved for state (live, missed, at stake) and the one
-   primary action per card.
-2. **One card style.** White, 1px hairline border, 12px radius, faint shadow.
-   No per-card gradients, no coloured card backgrounds except the two hero slots.
-3. **Numbers are the content.** KPIs, money, timers and scores use tabular
-   figures and the heaviest weight on the screen.
-4. **Restrained type.** Body is 14px. Nothing over 28px. Labels are 12px, never smaller.
-5. **Same shell everywhere.** Sidebar + top bar never move; screens swap inside.
+1. **Colour means something.** One accent (indigo) for actions, links, nav and
+   selection. Green / amber / red for status only. Red means broken, never
+   "look here". Brand colour stays off the data: money and scores are ink.
+2. **Hybrid soft UI, solid colours only.** No gradients. Surfaces sit one shade
+   above the canvas with a 1px hairline **and** a short light/dark shadow pair.
+   The border separates; the shadow only softens. **Raised = clickable**,
+   **inset = input or information**. State is always also shown by colour or
+   text, never by shadow alone (WCAG 1.4.11).
+3. **One card style.** `--surface`, `--edge` hairline, `--shadow-card`, 16px radius.
+   No coloured card backgrounds; categories show as a tinted icon tile. The only
+   dark surface is the floating call dock (and toast).
+4. **Size is hierarchy.** KPIs and money are the largest, heaviest text on the
+   screen, in tabular figures. Trends are line charts; per-day counts are bars.
+5. **Restrained type.** Body is 14px. Nothing over 28px. Labels are 12px, never smaller.
+6. **Same shell everywhere.** Sidebar + top bar never move; screens swap inside.
 
 ## Colour tokens
 
+`src/styles/tokens.css` holds the values; this is the map.
+
 ```css
 /* surfaces */
---canvas:        #f4f5f7;   /* app background */
---surface:       #ffffff;   /* cards, sheets */
---surface-muted: #f8f9fa;   /* inset rows, inputs */
---border:        #e6e8eb;
---border-strong: #d5d9de;
-
-/* shell (sidebar + top bar) */
---shell:         #0b1f17;
---shell-raised:  #132e23;   /* active nav item */
---shell-text:    #c9d6cf;
---shell-text-strong: #ffffff;
---shell-accent:  #6fdcb4;   /* active sub-item / phone tab on the dark shell */
---gold:          #f5c451;   /* rank star only */
+--canvas: #eef1f5;   --surface: #f8f9fb;   --surface-muted: #f1f3f7;
+--border / --edge: #e3e7ed;   --border-strong: #d0d6df;
 
 /* text */
---text:          #16181b;
---text-muted:    #5f6670;
---text-subtle:   #8b929b;
+--text: #101828;   --text-muted: #475467;   --text-subtle: #667085;
 
-/* brand / semantic */
---brand:         #1d9e75;   /* primary actions, positive deltas, live */
---brand-strong:  #0f6e56;   /* primary button bg, pressed */
---brand-tint:    #e6f6ef;
---ai:            #7c3aed;   /* Pulse, AvaniBot, AI Assist, lead intent */
---ai-tint:       #f2edff;
---warn:          #b7791f;   /* tasks, needs-input, SLA */
---warn-tint:     #fdf4e3;
---warn-strong:   #8a4b0c;   /* incoming-call dock (white text) */
---danger:        #d64545;   /* missed calls, end call, overdue */
---danger-tint:   #fdeeee;
---info:          #2563eb;   /* CSAT chart, incoming */
---info-tint:     #eaf1fe;
+/* accent: actions, links, nav, selection (never status) */
+--brand: #3b5bdb;   --brand-strong: #2f49b8;   --brand-tint: #e8edfc;
+
+/* status */
+--ok: #18a058 (live, positive, pass)   --warn: #b45309   --danger: #d0362f
+
+/* categories (icon tiles, charts) */
+--ai: #7048e8 (Pulse, AvaniBot)   --info: #0e7c9a (CSAT, incoming)
+--gold: #b7791f (rank star only)
+
+/* dark: floating call dock + toast */
+--ink: #1b2230;
 ```
-
-The only two gradients: the **dashboard hero** (`#14213d → #1e3a8a`, holds the
-greeting + KPI strip) and the **in-call card** (`--shell → --brand-strong`).
 
 ## Type
 
@@ -74,29 +63,30 @@ on numbers.
 
 ## Space, radius, elevation
 
-- Spacing on a 4px grid: `4 8 12 16 20 24 32`. Card padding 16, page gutter 24 (16 on phone).
-- Radius: `--r-sm 6px` (badges, chips) · `--r-md 10px` (buttons, inputs, rows) · `--r-lg 14px` (cards, modals) · `--r-full 999px` (pills, avatars).
-- Shadow: `--shadow-card: 0 1px 2px rgb(16 24 40 / .05)`; `--shadow-pop: 0 12px 32px rgb(16 24 40 / .18)` for modals/sheets only.
+- Spacing on a 4px grid: `4 8 12 16 20 24 32`. Card padding 20, page gutter 24 (16 on phone).
+- Radius: `--r-sm 8px` (badges, chips) · `--r-md 12px` (buttons, inputs, rows) · `--r-lg 16px` (cards, modals) · `--r-full 999px` (pills, avatars).
+- Shadow (short soft UI pairs): `--shadow-card` (4px, cards), `--shadow-raise` (2px, buttons/rows), `--shadow-press` (inset ring + soft inset, fields/info), `--shadow-pop` for modals/popovers only.
+- Card gap 24px: soft shadows need the room.
 
 ## Components
 
 | Component | Rule |
 |-----------|------|
-| **Button** | Primary: `--brand-strong` bg, white text, 36px tall. Secondary: white + border. Danger: `--danger`. Icon buttons 32px square. One primary per card. |
+| **Button** | Raised. Primary: `--brand-strong` bg, white text, 38px tall. Secondary: surface colour + `--edge`. Danger: `--danger`. Icon buttons 36px round. Press = `--shadow-press`. One primary per card. |
 | **Pill / badge** | 12px, `--r-full`, tint bg + strong text of the same hue (e.g. `--danger-tint` / `--danger`). Deltas: ▲ green, ▼ red. |
-| **Row** | 56–64px, avatar or icon tile (32px, `--r-md`, tint bg) left, title + meta middle, value/action right. Hover: `--surface-muted`. Whole row clickable when it opens something; chevron signals it. |
+| **Row** | 56–64px, avatar or icon tile (32px, `--r-md`, tint bg) left, title + meta middle, value/action right. Raised when it opens something (chevron signals it), inset when it only informs. |
 | **Avatar** | Initials, 32px circle, tint bg from a fixed 6-colour list hashed by name. |
 | **Section eyebrow** | 12px uppercase, `--text-subtle`, 0.04em tracking, 8px above its card. |
-| **Modal / sheet** | Centered ≤ 440px wide on desktop, bottom sheet on phone. Scrim `rgb(10 15 13 / .45)`. Close on Esc + scrim click. Focus trapped. |
-| **Charts** | Recharts bar charts, no gridlines, axis text `--fs-xs --text-subtle`, value labels on top, today's bar in the strong shade. Calls = `--brand`, CSAT = `--info`. |
+| **Modal / sheet** | Centered ≤ 440px wide on desktop, bottom sheet on phone. Scrim `rgb(29 42 57 / .4)`. Close on Esc + scrim click. Focus trapped. |
+| **Charts** | Recharts bar charts, no gridlines, axis text `--fs-xs --text-subtle`, value labels on top, today's bar in the strong shade. Calls = accent bars (today strong, past days light). CSAT = `--info` line with labelled points. |
 | **Icons** | Tabler icons (same family as the mock), 16px inline, 18px in nav. Stroke 1.75. |
 
 ## Shell
 
-- Sidebar 232px, `--shell`. Nav item 36px, 18px icon, active = `--shell-raised`
-  bg + white text. Plan's sub-items indent 28px and are always visible (as in the mock), so
+- Sidebar 240px, `--surface` with a hairline right border. Nav item 40px,
+  18px icon; active = accent-tint background, accent text, filled accent icon tile. Plan's sub-items indent 28px and are always visible (as in the mock), so
   every plan tab is one click away.
-- Top bar 56px, `--shell`, brand mark left; notifications, OG score + rank pill,
+- Top bar 64px, `--surface` with a hairline under it, raised round controls, brand mark left; notifications, OG score + rank pill,
   avatar right.
 - Phone (< 768px): sidebar becomes a bottom tab bar (Dashboard, Plan, Calendar,
   Pulse); Plan sub-items become a segmented control at the top of Plan.
@@ -104,5 +94,5 @@ on numbers.
 ## What we deliberately drop from the mock
 
 Floating DEMO strip, floating dial FAB as a gradient blob (we keep a plain dial
-button), per-card gradients (My Tasks brown, progress green), emoji in UI
+button), every gradient and every coloured card background, per-card gradients (My Tasks brown, progress green), emoji in UI
 chrome, 12.5/13.5/14.5/15.5/16.5px half sizes.

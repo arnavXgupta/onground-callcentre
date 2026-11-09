@@ -233,8 +233,8 @@ export default function Dashboard() {
 
       <div className={s.charts}>
         <Suspense fallback={<div className={s.chartSkeleton} />}>
-          <WeekChart title="Calls handled · last 7 days" labels={labels} values={data.callsHandled} color="#5fcfa6" strong="#0f6e56" />
-          <WeekChart title="CSAT trend · last 7 days" labels={labels} values={data.csat} unit="%" color="#9dbbf5" strong="#2563eb" />
+          <WeekChart title="Calls handled · last 7 days" labels={labels} values={data.callsHandled} color="#c7d2f5" strong="#3b5bdb" />
+          <WeekChart title="CSAT trend · last 7 days" labels={labels} values={data.csat} unit="%" color="#0e7c9a" strong="#0e7c9a" line />
         </Suspense>
       </div>
     </div>

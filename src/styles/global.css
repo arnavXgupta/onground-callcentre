@@ -56,3 +56,59 @@ textarea {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* ── dropdowns: every <select> gets a styled picker ──────────────────────
+   Chrome's customizable select (appearance: base-select) keeps the native
+   element (keyboard, screen readers, form value) and lets CSS style the list.
+   Browsers without it ignore this block and show their own list. */
+select,
+::picker(select) {
+  appearance: base-select;
+}
+
+select::picker-icon {
+  color: var(--text-subtle);
+  transition: rotate 0.15s;
+}
+
+select:open::picker-icon {
+  rotate: 180deg;
+}
+
+::picker(select) {
+  min-width: anchor-size(width);
+  margin-block: 6px;
+  padding: var(--sp-1);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-pop);
+}
+
+select option {
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+select option:hover,
+select option:focus-visible {
+  background: var(--surface-muted);
+  outline: 0;
+}
+
+select option:checked {
+  background: var(--brand-tint);
+  color: var(--brand-strong);
+  font-weight: 600;
+}
+
+select option::checkmark {
+  order: 1;
+  margin-left: auto;
+  color: var(--brand);
+}

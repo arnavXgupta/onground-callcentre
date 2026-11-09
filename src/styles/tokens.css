@@ -1,42 +1,54 @@
-/* Source of truth: brand.md. Change there first, then here. */
+/* Source of truth: brand.md. Change there first, then here.
+   Hybrid soft UI (D20): surfaces sit a shade lighter than the canvas, with a
+   hairline border and a light, short paired shadow. No gradients. Colour means
+   something: one accent for actions, green/amber/red for status only. */
 :root {
   /* surfaces */
-  --canvas: #f4f5f7;
-  --surface: #ffffff;
-  --surface-muted: #f8f9fa;
-  --border: #e6e8eb;
-  --border-strong: #d5d9de;
+  --canvas: #eef1f5;
+  --surface: #f8f9fb;
+  --surface-muted: #f1f3f7;   /* hover, inset wells */
+  --border: #e3e7ed;          /* dividers and tracks */
+  --border-strong: #d0d6df;
+  --edge: #e3e7ed;            /* card + control hairline (non-shadow cue) */
 
-  /* shell */
-  --shell: #0b1f17;
-  --shell-raised: #132e23;
-  --shell-text: #c9d6cf;
-  --shell-text-strong: #ffffff;
-  --shell-accent: #6fdcb4;   /* active sub-item / tab on the dark shell */
-  --gold: #f5c451;           /* rank star only */
+  /* shell: light chrome, the accent marks where you are */
+  --shell: var(--surface);
+  --shell-raised: var(--brand-tint);
+  --shell-text: #475467;
+  --shell-text-strong: #101828;
+  --shell-accent: var(--brand-strong);
+  --gold: #b7791f;            /* rank star only */
+
+  /* dark surface: floating call dock + toast only */
+  --ink: #1b2230;
+  --ink-raised: #283041;
+  --ink-text: #a7b0c0;
 
   /* text */
-  --text: #16181b;
-  --text-muted: #5f6670;
-  --text-subtle: #8b929b;
+  --text: #101828;
+  --text-muted: #475467;
+  --text-subtle: #667085;
 
-  /* brand / semantic */
-  --brand: #1d9e75;
-  --brand-strong: #0f6e56;
-  --brand-tint: #e6f6ef;
-  --ai: #7c3aed;
-  --ai-tint: #f2edff;
-  --warn: #b7791f;
-  --warn-tint: #fdf4e3;
-  --warn-strong: #8a4b0c;    /* incoming-call dock, white text on it */
-  --danger: #d64545;
-  --danger-tint: #fdeeee;
-  --info: #2563eb;
-  --info-tint: #eaf1fe;
+  /* accent: actions, links, selection, navigation. Never status. */
+  --brand: #3b5bdb;
+  --brand-strong: #2f49b8;
+  --brand-tint: #e8edfc;
 
-  /* the only two gradients */
-  --hero-gradient: linear-gradient(135deg, #14213d, #1e3a8a);
-  --call-gradient: linear-gradient(135deg, var(--shell), var(--brand-strong));
+  /* status */
+  --ok: #18a058;              /* live, positive delta, pass, on target */
+  --ok-strong: #12773f;
+  --ok-tint: #e3f5ea;
+  --warn: #b45309;
+  --warn-tint: #fdf1e1;
+  --warn-strong: #8a3f05;     /* incoming-call dock, white text on it */
+  --danger: #d0362f;
+  --danger-tint: #fdeceb;
+
+  /* categories */
+  --ai: #7048e8;              /* Pulse, AvaniBot, AI */
+  --ai-tint: #f0ebfe;
+  --info: #0e7c9a;            /* CSAT, incoming, role agents */
+  --info-tint: #e2f3f7;
 
   /* type: size / line-height */
   --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -52,18 +64,22 @@
   --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
 
   /* radius */
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-lg: 14px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
   --r-full: 999px;
 
-  /* elevation */
-  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow-pop: 0 12px 32px rgb(16 24 40 / 0.18);
-  --scrim: rgb(10 15 13 / 0.45);
+  /* elevation: short, light pairs. The border does the separating. */
+  --neu-dark: rgb(140 154 178 / 0.22);
+  --neu-light: rgb(255 255 255 / 0.9);
+  --shadow-card: 4px 4px 14px var(--neu-dark), -4px -4px 12px var(--neu-light);
+  --shadow-raise: 2px 2px 5px var(--neu-dark), -2px -2px 5px var(--neu-light);
+  --shadow-press: inset 0 0 0 1px var(--border), inset 2px 2px 4px rgb(140 154 178 / 0.18);
+  --shadow-pop: 0 16px 40px rgb(16 24 40 / 0.16), 0 2px 6px rgb(16 24 40 / 0.06);
+  --scrim: rgb(16 24 40 / 0.4);
 
   /* shell geometry */
-  --sidebar-w: 232px;
-  --topbar-h: 56px;
-  --tabbar-h: 60px;
+  --sidebar-w: 240px;
+  --topbar-h: 64px;
+  --tabbar-h: 64px;
 }
