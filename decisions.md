@@ -101,3 +101,11 @@ which needs a CLI login and project link before anything runs locally.
 audio/autoplay rules), and it puts the mic prompt up front rather than in the
 middle of answering a call. It also stops every visitor on the public link from
 silently registering as the agent and ringing on inbound calls.
+
+### D17 · Dashboard numbers are live where the app has the data
+**Why:** The mock's dashboard is a picture: its date filter relabels itself and
+its tasks are fixed. Ours reads real state wherever the app owns it: the queue
+pill is the softphone's registration, the task list is the open Pulse asks,
+"Leads called" counts calls placed in the app, and the period switch changes
+the numbers. Static sample values stay only where a backend would supply them
+(OG score, earnings, 7-day history).

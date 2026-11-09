@@ -4,7 +4,7 @@ import { renderAt } from './render'
 
 describe('routing', () => {
   it.each([
-    ['/dashboard', 'Dashboard'],
+    ['/dashboard', 'Arvind Rajan'],
     ['/plan/outgoing', 'Planned outgoing calls'],
     ['/plan/incoming', 'Missed calls'],
     ['/plan/recent', 'Recent calls'],
@@ -19,12 +19,12 @@ describe('routing', () => {
 
   it('/ redirects to the dashboard', () => {
     renderAt('/')
-    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Arvind Rajan' })).toBeInTheDocument()
   })
 
   it('unknown paths fall back to the dashboard', () => {
     renderAt('/nope/nothing')
-    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Arvind Rajan' })).toBeInTheDocument()
   })
 
   it('an unknown plan tab falls back to Calls to make', () => {

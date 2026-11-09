@@ -183,6 +183,7 @@
 /* inbound availability pill */
 .availability {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   gap: var(--sp-2);
   height: 32px;
@@ -469,6 +470,10 @@
 
   .scoreChip {
     display: none; /* the dashboard shows the score; the top bar needs the room for calling */
+  }
+
+  .titleText {
+    display: none; /* the bottom tab bar already names the section */
   }
 
   .actions {

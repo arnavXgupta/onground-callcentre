@@ -12,7 +12,7 @@ the shell, before the screens that hang off it.
 | 05 | Plan · Incoming: missed calls, value at stake, Call back | must | [05](05-incoming.md) | done |
 | 06 | Plan · Recent: call log by type/time/length, review modal | must | [06](06-recent.md) | done |
 | 07 | AI calling: Pipecat bot phones a lead | **required** (where possible) | [07](07-ai-calling.md) | researched |
-| 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | 08 | – |
+| 08 | Dashboard: KPIs, progress, who's waiting, earnings, tasks, 7-day charts | must + bonus charts | [08](08-dashboard.md) | done |
 | 09 | Leads modal: ICP + intent scores, collapsible signals, paging | must | [09](09-leads-modal.md) | done |
 | 10 | Pulse home: AvaniBot, role/task agents, channels, Kudos | must | [10](10-pulse-home.md) | done |
 | 11 | Pulse channel: chat, send message, Needs-your-input card | must + 2 bonuses | [11](11-pulse-channel.md) | done |

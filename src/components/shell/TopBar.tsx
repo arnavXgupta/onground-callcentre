@@ -82,7 +82,7 @@ export default function TopBar() {
     <header className={s.topbar}>
       <div className={s.title}>
         <span className={s.logo}>OG</span>
-        {section}
+        <span className={s.titleText}>{section}</span>
       </div>
 
       <div className={s.actions}>

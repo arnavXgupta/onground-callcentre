@@ -1,0 +1,20 @@
+{
+  "ogScore": { "value": 76, "delta": 13 },
+  "periods": {
+    "today": { "label": "Today", "aht": "4m 12s", "ahtDelta": -8, "csat": 94, "csatDelta": 2, "created": 3, "createdDelta": 1, "called": 2, "calledDelta": 2 },
+    "week": { "label": "This week", "aht": "4m 31s", "ahtDelta": -3, "csat": 91, "csatDelta": 1, "created": 14, "createdDelta": 4, "called": 11, "calledDelta": 3 },
+    "month": { "label": "This month", "aht": "4m 48s", "ahtDelta": 2, "csat": 89, "csatDelta": -1, "created": 52, "createdDelta": 9, "called": 41, "calledDelta": 6 }
+  },
+  "queue": [
+    { "name": "Priya Iyer", "reason": "Likely billing dispute, flagged before", "waitingSec": 260 },
+    { "name": "Suresh Nair", "reason": "Plan upgrade enquiry", "waitingSec": 110 }
+  ],
+  "earnings": { "amount": 5200, "coached": 1700, "slabMin": 800, "slabMax": 6000 },
+  "callsHandled": [18, 22, 15, 26, 20, 12, 14],
+  "csat": [88, 90, 85, 92, 89, 91, 94],
+  "tasks": [
+    { "askId": "confirm-callback", "kind": "callback", "title": "2 callbacks", "detail": "next 4:30pm", "to": "/pulse/callcentre-team" },
+    { "askId": "hot-leads", "kind": "leads", "title": "2 hot leads", "detail": "untouched 24h", "to": "?leads" },
+    { "askId": "log-outcome", "kind": "outcome", "title": "1 outcome", "detail": "to log", "to": "/pulse/avanibot" }
+  ]
+}

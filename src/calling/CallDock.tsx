@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { IconDialpad, IconMicrophone, IconMicrophoneOff, IconPhone, IconPhoneOff, IconX } from '@tabler/icons-react'
 import { leadById } from '../data'
 import { clock, formatINR } from '../lib/format'
+import { useNow } from '../lib/useNow'
 import { useCall } from './CallProvider'
 import { Keypad } from './DialPad'
 import { callSeconds, type Phase } from './machine'
@@ -13,17 +14,6 @@ const LABEL: Partial<Record<Phase, string>> = {
   ringing: 'Ringing…',
   incoming: 'Incoming call',
   in_call: 'On call',
-}
-
-function useNow(ticking: boolean) {
-  const [now, setNow] = useState(() => Date.now())
-  useEffect(() => {
-    if (!ticking) return
-    setNow(Date.now())
-    const t = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(t)
-  }, [ticking])
-  return now
 }
 
 /** Global call UI: rendered once by the shell so a call survives navigation. */

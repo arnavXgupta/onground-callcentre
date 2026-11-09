@@ -34,7 +34,7 @@ describe('sidebar nav', () => {
   })
 
   it('swaps the screen when a link is clicked', async () => {
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/calendar')
     await user.click(nav().getByRole('link', { name: 'Recent' }))
     expect(screen.getByRole('heading', { name: 'Recent calls' })).toBeInTheDocument()
     await user.click(nav().getByRole('link', { name: 'Plan' }))
@@ -44,7 +44,7 @@ describe('sidebar nav', () => {
 
 describe('top bar', () => {
   it.each([
-    ['/dashboard', 'Dashboard'],
+    ['/dashboard', 'Arvind Rajan'],
     ['/plan/recent', 'Plan'],
     ['/calendar', 'Calendar'],
     ['/pulse/all-stores', 'Pulse'],
@@ -76,9 +76,10 @@ describe('top bar', () => {
   })
 
   it('account menu shows who is signed in', () => {
-    renderAt('/dashboard')
-    expect(screen.getByText('Arvind Rajan')).toBeInTheDocument()
-    expect(screen.getByText('Call Centre Agent')).toBeInTheDocument()
-    expect(screen.getByText('The Sleep Company · Koramangala')).toBeInTheDocument()
+    renderAt('/calendar')
+    const menu = within(document.getElementById('user-popover')!)
+    expect(menu.getByText('Arvind Rajan')).toBeInTheDocument()
+    expect(menu.getByText('Call Centre Agent')).toBeInTheDocument()
+    expect(menu.getByText('The Sleep Company · Koramangala')).toBeInTheDocument()
   })
 })

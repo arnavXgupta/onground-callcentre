@@ -10,6 +10,7 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.test.{ts,tsx}'],
     setupFiles: ['tests/setup.ts'],
+    testTimeout: 15_000, // jsdom + whole-app renders; the first Recharts import per worker is slow
     css: { modules: { classNameStrategy: 'non-scoped' } },
   },
 })

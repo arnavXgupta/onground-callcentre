@@ -17,7 +17,7 @@ beforeEach(() => phone.reset())
 
 describe('Leads modal', () => {
   it('opens from ?leads on lead 1 with ICP and intent', () => {
-    renderAt('/dashboard?leads')
+    renderAt('/plan/recent?leads')
     expect(modal()).toHaveTextContent('Lead 1 of 5 · SLA to close')
     expect(modal()).toHaveTextContent('Mukunda')
     expect(modal()).toHaveTextContent('Interested: Ortho GRID · ₹8,490')
@@ -33,12 +33,12 @@ describe('Leads modal', () => {
   })
 
   it('falls back to lead 1 for an unknown id', () => {
-    renderAt('/dashboard?leads=nobody')
+    renderAt('/plan/recent?leads=nobody')
     expect(modal()).toHaveTextContent('Lead 1 of 5')
   })
 
   it('pages with the arrows, the dots and the keyboard, and stops at the ends', async () => {
-    const { user } = renderAt('/dashboard?leads')
+    const { user } = renderAt('/plan/recent?leads')
     const prev = within(modal()).getByRole('button', { name: 'Previous lead' })
     const next = within(modal()).getByRole('button', { name: 'Next lead' })
     expect(prev).toBeDisabled()
@@ -62,7 +62,7 @@ describe('Leads modal', () => {
   })
 
   it('folds: breakdown and journey closed, signals and notes open; each toggles', async () => {
-    const { user } = renderAt('/dashboard?leads')
+    const { user } = renderAt('/plan/recent?leads')
     expect(fold('ICP fit breakdown')).not.toHaveAttribute('open')
     expect(fold('How we got here')).not.toHaveAttribute('open')
     expect(fold('Where we picked up signals')).toHaveAttribute('open')
@@ -79,7 +79,7 @@ describe('Leads modal', () => {
   })
 
   it('toggles the quote switch per lead', async () => {
-    const { user } = renderAt('/dashboard?leads')
+    const { user } = renderAt('/plan/recent?leads')
     const quote = within(modal()).getByRole('switch', { name: 'Quote to be given to customer' })
     expect(quote).toHaveAttribute('aria-checked', 'true')
     await user.click(quote)
@@ -89,7 +89,7 @@ describe('Leads modal', () => {
   })
 
   it('Call closes the modal and dials the lead', async () => {
-    const { user } = renderAt('/dashboard?leads=faizan-a')
+    const { user } = renderAt('/plan/recent?leads=faizan-a')
     await user.click(within(modal()).getByRole('button', { name: 'Call Faizan A.' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(phone.device.connect).toHaveBeenCalledWith({ leadId: 'faizan-a' })
@@ -102,7 +102,7 @@ describe('Leads modal', () => {
       search = useLocation().search
       return null
     }
-    const { user } = renderAt('/dashboard?leads', <Spy />)
+    const { user } = renderAt('/plan/recent?leads', <Spy />)
     await user.click(within(modal()).getByRole('button', { name: 'Close' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     expect(search).toBe('')

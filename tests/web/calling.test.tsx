@@ -36,7 +36,7 @@ afterEach(() => {
 
 describe('outbound call', () => {
   it('walks dial → ringing → on call → mute → keypad → end → wrap-up → saved to the log', async () => {
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
 
     expect(phone.device.connect).toHaveBeenCalledWith({ To: '98000 00002' })
@@ -84,7 +84,7 @@ describe('outbound call', () => {
   })
 
   it('ticks the timer while connected', async () => {
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     vi.useFakeTimers({ shouldAdvanceTime: false })
     act(() => phone.device.last.emit('accept'))
@@ -93,7 +93,7 @@ describe('outbound call', () => {
   })
 
   it('a call nobody answers lands in wrap-up as "Not connected", with No answer preselected', async () => {
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     act(() => phone.device.last.emit('ringing'))
     act(() => phone.device.last.emit('disconnect'))
@@ -113,7 +113,7 @@ describe('outbound call', () => {
       phone.device.calls.push(call)
       return call
     })
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     await user.click(within(dock()).getByRole('button', { name: 'End call' }))
     expect(wrapUp()).toBeInTheDocument()
@@ -128,7 +128,7 @@ describe('outbound call', () => {
 
   it('a failure before connecting shows why and leaves nothing behind', async () => {
     phone.createError = new Error("Server is missing env: TWILIO_API_KEY_SID")
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     expect(screen.getByRole('alert')).toHaveTextContent('TWILIO_API_KEY_SID')
     expect(screen.queryByRole('region', { name: 'Call' })).not.toBeInTheDocument()
@@ -136,7 +136,7 @@ describe('outbound call', () => {
   })
 
   it('blocks a second call while one is live', async () => {
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await dialFromPad(user)
     act(() => phone.device.last.emit('accept'))
     expect(screen.getByRole('button', { name: 'Dial pad' })).toBeDisabled()
@@ -150,7 +150,7 @@ describe('outbound call', () => {
 describe('going online', () => {
   it('asks for the mic, registers, and shows Online; clicking again goes offline', async () => {
     const getUserMedia = mockMicrophone(true)
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await user.click(screen.getByRole('button', { name: 'Go online' }))
     expect(getUserMedia).toHaveBeenCalledWith({ audio: true })
     expect(phone.device.register).toHaveBeenCalled()
@@ -161,7 +161,7 @@ describe('going online', () => {
 
   it('shows Mic blocked and does not register when the mic is denied', async () => {
     mockMicrophone(false)
-    const { user } = renderAt('/dashboard')
+    const { user } = renderAt('/plan/recent')
     await user.click(screen.getByRole('button', { name: 'Go online' }))
     expect(screen.getByRole('button', { name: 'Mic blocked' })).toHaveAttribute('title', expect.stringContaining('address bar'))
     expect(phone.device.register).not.toHaveBeenCalled()
@@ -170,7 +170,7 @@ describe('going online', () => {
 
 describe('inbound call', () => {
   async function online() {
-    const r = renderAt('/dashboard')
+    const r = renderAt('/plan/recent')
     await r.user.click(screen.getByRole('button', { name: 'Go online' }))
     return r
   }
